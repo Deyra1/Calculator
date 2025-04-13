@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 顶部功能区 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#333333"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <!-- 菜单按钮 -->
+        <ImageButton
+            android:id="@+id/btnMenu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="菜单"
+            android:src="@android:drawable/ic_menu_sort_by_size"
+            android:tint="#CCCCCC" />
+
+        <!-- 选项卡部分 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tabBasic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="基础"
+                android:textColor="#CCCCCC"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tabScientific"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="科学"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tabFraction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="分数"
+                android:textColor="#CCCCCC"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <!-- 右侧功能按钮 -->
+        <ImageButton
+            android:id="@+id/btnEdit"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="编辑"
+            android:src="@android:drawable/ic_menu_edit"
+            android:tint="#CCCCCC" />
+
+        <ImageButton
+            android:id="@+id/btnSettings"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="设置"
+            android:src="@android:drawable/ic_menu_preferences"
+            android:tint="#CCCCCC" />
+
+        <ImageButton
+            android:id="@+id/btnMute"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="静音"
+            android:src="@android:drawable/ic_lock_silent_mode"
+            android:tint="#CCCCCC" />
+    </LinearLayout>
+
+    <!-- 显示区域 -->
+    <TextView
+        android:id="@+id/display"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="#F5F5F5"
+        android:gravity="end|bottom"
+        android:padding="16dp"
+        android:text="0"
+        android:textColor="#000000"
+        android:textSize="40sp" />
+
+    <!-- 历史记录区域 -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF">
+
+        <LinearLayout
+            android:id="@+id/historyContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:padding="4dp"
+                android:text="80×10,000÷30÷12"
+                android:textColor="#666666"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:padding="4dp"
+                android:text="=2,222.22222222"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="#EEEEEE" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 计算器按钮区域 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <Button android:id="@+id/btnFx" android:text="fx" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnDeg" android:text="°" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnPow" android:text="xʸ" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnRoot" android:text="√" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnClear" android:text="C" style="@style/CalculatorButton"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <Button android:id="@+id/btnSin" android:text="sin" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnLeftParen" android:text="(" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnRightParen" android:text=")" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnFactorial" android:text="n!" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnDelete" android:text="⌫" style="@style/CalculatorButton"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <Button android:id="@+id/btnCos" android:text="cos" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btn7" android:text="7" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btn8" android:text="8" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btn9" android:text="9" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnMultiply" android:text="×" style="@style/CalculatorButton"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <Button android:id="@+id/btnTan" android:text="tan" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btn4" android:text="4" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btn5" android:text="5" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btn6" android:text="6" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnMinus" android:text="-" style="@style/CalculatorButton"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <Button android:id="@+id/btnLn" android:text="ln" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btn1" android:text="1" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btn2" android:text="2" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btn3" android:text="3" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnPlus" android:text="+" style="@style/CalculatorButton"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <Button android:id="@+id/btnLog" android:text="log" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnPercent" android:text="%" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btn0" android:text="0" style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnDot" android:text="." style="@style/CalculatorButton"/>
+            <Button android:id="@+id/btnEquals" android:text="=" style="@style/CalculatorButton"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 底部操作栏 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#F5F5F5"
+        android:padding="8dp">
+
+        <Button
+            android:id="@+id/btnContinueCalc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="继续计算"
+            android:textColor="#333333"
+            android:background="@null"/>
+
+        <Button
+            android:id="@+id/btnClearHistory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="清除记录"
+            android:textColor="#333333"
+            android:background="@null"/>
+    </LinearLayout>
+</LinearLayout> 
