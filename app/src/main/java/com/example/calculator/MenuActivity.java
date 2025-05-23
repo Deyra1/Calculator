@@ -25,10 +25,10 @@ public class MenuActivity extends AppCompatActivity {
                 username = "Guest"; // 默认用户名
             }
             
-            // 设置欢迎信息
-            TextView welcomeTextView = findViewById(R.id.txtUsername);
-            if (welcomeTextView != null) {
-                welcomeTextView.setText("用户：" + username);
+            // 设置用户名显示
+            TextView txtUsername = findViewById(R.id.txtUsername);
+            if (txtUsername != null) {
+                txtUsername.setText(username);
             }
             
             // 初始化菜单按钮
@@ -44,7 +44,7 @@ public class MenuActivity extends AppCompatActivity {
     
     private void setupMenuButtons() {
         try {
-            // 设置"返回计算器"按钮
+            // 设置"返回"按钮
             View btnBack = findViewById(R.id.btnBack);
             if (btnBack != null) {
                 btnBack.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +55,7 @@ public class MenuActivity extends AppCompatActivity {
                 });
             }
             
-            // 设置"关于我们"按钮
+            // 设置"关于"按钮
             View menuItemAbout = findViewById(R.id.menuItemAbout);
             if (menuItemAbout != null) {
                 menuItemAbout.setOnClickListener(new View.OnClickListener() {
@@ -67,20 +67,20 @@ public class MenuActivity extends AppCompatActivity {
                 });
             }
             
-            // 设置历史记录和主题设置菜单项
-            setupMenuItem(R.id.menuItemHistory, "历史记录功能待实现");
-            setupMenuItem(R.id.menuItemTheme, "主题设置功能待实现");
-            
-            // 设置发送广播菜单项
-            View menuItemBroadcast = findViewById(R.id.menuItemBroadcast);
-            if (menuItemBroadcast != null) {
-                menuItemBroadcast.setOnClickListener(new View.OnClickListener() {
+            // 设置历史记录菜单项
+            View menuItemHistory = findViewById(R.id.menuItemHistory);
+            if (menuItemHistory != null) {
+                menuItemHistory.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        sendCustomBroadcast();
+                        Intent historyIntent = new Intent(MenuActivity.this, HistoryActivity.class);
+                        startActivity(historyIntent);
                     }
                 });
             }
+            
+            // 设置主题菜单项
+            setupMenuItem(R.id.menuItemTheme, "主题设置功能待实现");
             
             // 设置"退出登录"按钮
             Button btnLogout = findViewById(R.id.btnLogout);
@@ -98,29 +98,6 @@ public class MenuActivity extends AppCompatActivity {
                 });
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * 发送自定义广播
-     */
-    private void sendCustomBroadcast() {
-        try {
-            // 创建一个Intent，指定action
-            Intent broadcastIntent = new Intent("com.example.calculator.CUSTOM_ACTION");
-            
-            // 添加额外数据（可选）
-            broadcastIntent.putExtra("message", "来自" + username + "的广播消息");
-            broadcastIntent.putExtra("timestamp", System.currentTimeMillis());
-            
-            // 发送广播
-            sendBroadcast(broadcastIntent);
-            
-            // 提示用户
-            Toast.makeText(this, "广播已发送！", Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            Toast.makeText(this, "发送广播失败: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }

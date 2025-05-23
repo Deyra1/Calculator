@@ -5,8 +5,23 @@
 
     <!-- 基于AppCompat的主题 -->
     <style name="Theme.AppCompatCalculator" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorAccent">@color/teal_200</item>
+        <!-- 主要颜色 -->
+        <item name="colorPrimary">#333333</item>
+        <item name="colorPrimaryDark">#e8f7f0</item>
+        <item name="colorAccent">#FFDD55</item>
+        
+        <!-- 状态栏颜色 -->
+        <item name="android:statusBarColor">#e8f7f0</item>
+        <item name="android:windowLightStatusBar">true</item>
+        
+        <!-- 窗口背景 -->
+        <item name="android:windowBackground">@android:color/white</item>
+        
+        <!-- 按钮样式 -->
+        <item name="buttonStyle">@style/CalculatorButton</item>
+        
+        <!-- 文本颜色 -->
+        <item name="android:textColorPrimary">#333333</item>
+        <item name="android:textColorSecondary">#666666</item>
     </style>
 </resources>

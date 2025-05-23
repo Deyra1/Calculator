@@ -5,45 +5,55 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="#e8f5e8">
 
-    <!-- 顶部栏 -->
+    <!-- 顶部功能区 - 与计算器页面保持一致 -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="#333333"
+        android:layout_height="wrap_content"
+        android:background="#e8f5e8"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:paddingHorizontal="16dp">
+        android:padding="12dp">
 
+        <!-- 返回按钮 -->
         <ImageButton
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            android:tint="#FFFFFF"
-            android:contentDescription="返回" />
+            android:contentDescription="返回"
+            android:src="@drawable/back"
+            android:tint="#666666" />
 
-        <TextView
+        <!-- 标题部分 -->
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="关于我们"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
             android:gravity="center"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
 
-        <Space
-            android:layout_width="40dp"
-            android:layout_height="40dp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="关于我们"
+                android:textColor="#4CAF50"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 右侧预留空间 -->
+        <View
+            android:layout_width="36dp"
+            android:layout_height="36dp" />
     </LinearLayout>
 
     <!-- 内容区域 -->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#e8f5e8">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -52,118 +62,188 @@
             android:padding="16dp">
 
             <!-- 应用图标和名称 -->
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:layout_marginBottom="24dp">
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#F5F5F5"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
 
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@mipmap/ic_launcher"
-                    android:background="#E0E0E0"
-                    android:padding="16dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="计算器应用"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="8dp"
-                    android:textColor="#333333" />
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="v1.0.0"
-                    android:textSize="16sp"
-                    android:textColor="#666666" />
-            </LinearLayout>
+                    <ImageView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:background="#F5F5F5"
+                        android:padding="8dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="计算器应用"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:textColor="#333333" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/app_version"
+                        android:textSize="16sp"
+                        android:textColor="#666666" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- 项目简介 -->
-            <TextView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="项目简介"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#333333"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#F5F5F5"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="本应用是Android开发课程的期末项目，实现了基本的计算器功能，包括基础计算、科学计算以及用户登录等功能。"
-                android:textSize="16sp"
-                android:textColor="#333333"
-                android:layout_marginBottom="16dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="项目简介"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#4CAF50"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="本应用是Android开发课程的期末项目，实现了基本的计算器功能，包括基础计算、科学计算以及用户登录等功能。"
+                        android:textSize="16sp"
+                        android:textColor="#333333" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- 功能特点 -->
-            <TextView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="功能特点"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#333333"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#F5F5F5"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="1. 基础计算功能\n2. 科学计算功能\n3. 分数计算功能\n4. 历史记录查看\n5. 用户登录注册\n6. 主题设置\n7. 广播功能演示"
-                android:textSize="16sp"
-                android:textColor="#333333"
-                android:layout_marginBottom="16dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="功能特点"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#4CAF50"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="1. 基础计算功能\n2. 科学计算功能\n3. 进制转换功能\n4. 历史记录查看\n5. 用户登录注册\n6. TTL"
+                        android:textSize="16sp"
+                        android:textColor="#333333" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- 技术实现 -->
-            <TextView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="本项目采用了以下Android开发技术："
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#333333"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#F5F5F5"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="- Activity和布局设计\n- Intent和Activity跳转\n- 广播接收器\n- 用户界面设计\n- 事件处理\n- Java面向对象编程"
-                android:textSize="16sp"
-                android:textColor="#333333"
-                android:layout_marginBottom="16dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="技术实现"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#4CAF50"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="- Activity和布局设计\n- Intent和Activity跳转\n- 广播接收器\n- 用户界面设计\n- 事件处理\n- Java面向对象编程"
+                        android:textSize="16sp"
+                        android:textColor="#333333" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- 开发团队 -->
-            <TextView
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="开发团队"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#333333"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="16dp"
+                app:cardBackgroundColor="#F5F5F5"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="小组成员：\n- 代樾\n- 吴紫玉\n- 高嘉洁"
-                android:textSize="16sp"
-                android:textColor="#333333"
-                android:layout_marginBottom="24dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="开发团队"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#4CAF50"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="小组成员：\n- 代樾\n- 吴紫玉\n- 高嘉洁"
+                        android:textSize="16sp"
+                        android:textColor="#333333" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <!-- 版权信息 -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="© 2024 计算器项目小组 版权所有"
+                android:text="© 2025 计算器项目小组 版权所有"
                 android:textSize="14sp"
-                android:textColor="#999999"
+                android:textColor="#4CAF50"
                 android:gravity="center"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout> 

@@ -3,6 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.calculator">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.TTS_SERVICE" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,19 +20,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompatCalculator"
+        android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".LoginActivity"
             android:exported="true"
+            android:theme="@style/Theme.AppCompatCalculator"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CalculatorActivity" />
-        <activity android:name=".MenuActivity" />
-        <activity android:name=".AboutActivity" />
+        <activity 
+            android:name=".CalculatorActivity"
+            android:theme="@style/Theme.AppCompatCalculator"
+            android:launchMode="singleTask"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustPan" />
+        <activity 
+            android:name=".MenuActivity"
+            android:theme="@style/Theme.AppCompatCalculator" />
+        <activity 
+            android:name=".AboutActivity"
+            android:theme="@style/Theme.AppCompatCalculator" />
+        <activity 
+            android:name=".BinaryConverterActivity"
+            android:theme="@style/Theme.AppCompatCalculator" />
+        <activity
+            android:name=".HistoryActivity"
+            android:theme="@style/Theme.AppCompatCalculator"
+            android:exported="false" />
         
         <!-- 注册广播接收器 -->
         <receiver

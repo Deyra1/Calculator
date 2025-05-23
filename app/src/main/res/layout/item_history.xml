@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- 计算表达式 -->
+        <TextView
+            android:id="@+id/txtExpression"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="722+46.2"
+            android:textColor="#666666"
+            android:textSize="16sp"
+            android:gravity="end" />
+
+        <!-- 计算结果 -->
+        <TextView
+            android:id="@+id/txtResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="768.2"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:layout_marginTop="4dp" />
+
+        <!-- 计算时间 -->
+        <TextView
+            android:id="@+id/txtTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2024-06-15 14:30:25"
+            android:textColor="#999999"
+            android:textSize="12sp"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+</androidx.cardview.widget.CardView> 

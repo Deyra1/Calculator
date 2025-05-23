@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 平板等大屏设备的文本大小 -->
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_large">26sp</dimen>
+    <dimen name="text_size_xlarge">30sp</dimen>
+    
+    <!-- 间距 -->
+    <dimen name="spacing_small">6dp</dimen>
+    <dimen name="spacing_medium">12dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+</resources> 

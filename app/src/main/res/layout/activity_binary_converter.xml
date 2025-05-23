@@ -1,0 +1,540 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#e8f5e8">
+
+    <!-- 顶部功能区 - 与计算器页面保持一致 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#e8f5e8"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <!-- 菜单按钮 -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="返回"
+            android:src="@drawable/icon_settings"
+            android:tint="#666666" />
+
+        <!-- 选项卡部分 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tabBasic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="基础"
+                android:textColor="#666666"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tabBinary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:text="进制转换"
+                android:textColor="#4CAF50"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 右侧预留空间 -->
+        <View
+            android:layout_width="36dp"
+            android:layout_height="36dp" />
+    </LinearLayout>
+
+    <!-- 转换列表区域 - 响应式四宫格布局 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp">
+
+        <!-- 十进制 - 左上格 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardDecimal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            app:cardBackgroundColor="#F5F5F5"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cardBinary"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/cardOctal"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintVertical_weight="1">
+
+            <LinearLayout
+                android:id="@+id/layoutDecimalRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="十进制 DEC"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/text_size_medium"
+                    android:layout_marginBottom="8dp" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+                    <TextView
+                        android:id="@+id/txtDecimalValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/text_size_large"
+                        android:textStyle="bold"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
+                </HorizontalScrollView>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 二进制 - 右上格 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardBinary"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            app:cardBackgroundColor="#F5F5F5"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:layout_constraintStart_toEndOf="@id/cardDecimal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/cardHex"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintVertical_weight="1">
+
+            <LinearLayout
+                android:id="@+id/layoutBinaryRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="二进制 BIN"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/text_size_medium"
+                    android:layout_marginBottom="8dp" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+                    <TextView
+                        android:id="@+id/txtBinaryValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/text_size_large"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
+                </HorizontalScrollView>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 八进制 - 左下格 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardOctal"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            app:cardBackgroundColor="#F5F5F5"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/cardHex"
+            app:layout_constraintTop_toBottomOf="@id/cardDecimal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintVertical_weight="1">
+
+            <LinearLayout
+                android:id="@+id/layoutOctalRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="八进制 OCT"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/text_size_medium"
+                    android:layout_marginBottom="8dp" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+                    <TextView
+                        android:id="@+id/txtOctalValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/text_size_large"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
+                </HorizontalScrollView>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <!-- 十六进制 - 右下格 -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardHex"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="4dp"
+            app:cardBackgroundColor="#F5F5F5"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            app:layout_constraintStart_toEndOf="@id/cardOctal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardBinary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintVertical_weight="1">
+
+            <LinearLayout
+                android:id="@+id/layoutHexadecimalRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="十六进制 HEX"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/text_size_medium"
+                    android:layout_marginBottom="8dp" />
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+                    <TextView
+                        android:id="@+id/txtHexValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1"
+                        android:gravity="center"
+                        android:layout_gravity="center_horizontal"
+                        android:textColor="#333333"
+                        android:textSize="@dimen/text_size_large"
+                        android:maxLines="1"
+                        android:ellipsize="end" />
+                </HorizontalScrollView>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- 计算器按键区域 -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:rowCount="5"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginBottom="8dp">
+
+        <!-- 第一行 -->
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="C"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="⌫"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnF"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="F"
+            android:textColor="#999999"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnE"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="E"
+            android:textColor="#999999"
+            android:textSize="20sp" />
+
+        <!-- 第二行 -->
+        <Button
+            android:id="@+id/btn7"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="7"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn8"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="8"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn9"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="9"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnD"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="D"
+            android:textColor="#999999"
+            android:textSize="20sp" />
+
+        <!-- 第三行 -->
+        <Button
+            android:id="@+id/btn4"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="4"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn5"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="5"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn6"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="6"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnC"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="C"
+            android:textColor="#999999"
+            android:textSize="20sp" />
+
+        <!-- 第四行 -->
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="1"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn2"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="2"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn3"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="3"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnB"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="B"
+            android:textColor="#999999"
+            android:textSize="20sp" />
+
+        <!-- 第五行 -->
+        <Button
+            android:id="@+id/btnDoubleZero"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="00"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn0"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="0"
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnDot"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="."
+            android:textColor="#333333"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnA"
+            android:layout_width="0dp"
+            android:layout_height="55dp"
+            android:layout_columnWeight="1"
+            android:layout_margin="3dp"
+            android:background="@drawable/rounded_button"
+            android:backgroundTint="#ffffff"
+            android:text="A"
+            android:textColor="#999999"
+            android:textSize="20sp" />
+    </GridLayout>
+</LinearLayout> 
