@@ -61,6 +61,17 @@
             android:contentDescription="静音"
             android:src="@drawable/volume_off"
             app:tint="#666666" />
+
+        <!-- 语音输入按钮 - 添加到这里 -->
+        <ImageButton
+            android:id="@+id/btnVoiceInput"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_marginEnd="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="语音输入"
+            android:src="@drawable/ic_mic"
+            app:tint="#666666" />
     </LinearLayout>
 
     <!-- 显示区域 -->

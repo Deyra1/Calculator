@@ -9,6 +9,9 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
+import android.speech.RecognitionListener;
+import android.speech.SpeechRecognizer;
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.calculator.model.HistoryItem;
 import com.example.calculator.utils.HistoryManager;
@@ -24,6 +29,10 @@ import com.example.calculator.utils.HistoryManager;
 import java.util.List;
 import java.util.Locale;
 import java.util.HashMap;
+import java.util.ArrayList;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import java.util.Map;
 
 public class CalculatorActivity extends AppCompatActivity {
     private TextView display;
@@ -39,6 +48,12 @@ public class CalculatorActivity extends AppCompatActivity {
     private TextToSpeech textToSpeech;
     private boolean isTTSInitialized = false;
     private boolean paused = true; // Initialize paused to true
+
+    private ImageButton btnVoiceInput; // 声明语音输入按钮
+    private SpeechRecognizer speechRecognizer; // 声明 SpeechRecognizer
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200; // 权限请求码
+
+    private boolean isListeningForSpeech = false; // 标记是否正在进行语音输入
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +100,9 @@ public class CalculatorActivity extends AppCompatActivity {
             
             // 初始化计算器按钮
             setupCalculatorButtons();
+
+            // 初始化语音输入
+            setupVoiceInput();
             
             // 注册广播接收器
             broadcastReceiver = new CalculatorBroadcastReceiver();
@@ -221,6 +239,12 @@ public class CalculatorActivity extends AppCompatActivity {
                 Log.e("CalculatorActivity", "关闭语音引擎失败: " + e.getMessage());
             }
         }
+        // 在 Activity 销毁时销毁 SpeechRecognizer
+        if (speechRecognizer != null) {
+            speechRecognizer.destroy();
+            speechRecognizer = null;
+            Log.d("SpeechRecognizer", "SpeechRecognizer 已销毁");
+        }
         super.onDestroy();
         // 注销广播接收器
         try {
@@ -265,6 +289,11 @@ public class CalculatorActivity extends AppCompatActivity {
             btnMute.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // 如果语音输入正在进行，先停止语音输入
+                    if (isListeningForSpeech) {
+                        stopVoiceRecognition();
+                    }
+
                     if (!isTTSInitialized) {
                         // 如果TTS未初始化，尝试重新初始化
                         initializeTextToSpeech();
@@ -568,5 +597,425 @@ public class CalculatorActivity extends AppCompatActivity {
                            "3. 检查系统版本是否支持\n\n" +
                            "如果问题持续，请联系开发人员");
         return fallbackView;
+    }
+
+    private void setupVoiceInput() {
+        // 初始化语音输入按钮
+        btnVoiceInput = findViewById(R.id.btnVoiceInput);
+        if (btnVoiceInput != null) {
+            // 检查设备是否支持语音识别
+            if (SpeechRecognizer.isRecognitionAvailable(this)) {
+                btnVoiceInput.setEnabled(true); // 如果支持，启用按钮
+                btnVoiceInput.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 检查并请求录音权限
+                        if (ContextCompat.checkSelfPermission(CalculatorActivity.this, android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(CalculatorActivity.this, new String[]{android.Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO_PERMISSION);
+                        } else {
+                            // 权限已授予，开始语音识别
+                            startVoiceRecognition();
+                        }
+                    }
+                });
+
+            } else {
+                btnVoiceInput.setEnabled(false); // 如果不支持，禁用按钮
+                Toast.makeText(this, "设备不支持语音识别", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Log.e("CalculatorActivity", "无法找到语音输入按钮");
+        }
+        // 设置麦克风按钮初始状态
+        updateVoiceInputButtonState();
+    }
+
+    private void startVoiceRecognition() {
+        // 在这里创建并初始化 SpeechRecognizer
+        if (speechRecognizer != null) {
+            // 如果 SpeechRecognizer 已经存在，先销毁（防止重复创建或状态异常）
+            speechRecognizer.destroy();
+            speechRecognizer = null;
+        }
+
+        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
+        speechRecognizer.setRecognitionListener(new RecognitionListener() {
+            @Override
+            public void onReadyForSpeech(Bundle params) {
+                Log.i("SpeechRecognizer", "准备就绪");
+                // 可以在这里更新UI，提示用户可以开始说话
+                // display.setText("请说话...");
+                Toast.makeText(CalculatorActivity.this, "请说话...", Toast.LENGTH_SHORT).show(); // 添加提示
+            }
+
+            @Override
+            public void onBeginningOfSpeech() {
+                Log.i("SpeechRecognizer", "开始说话");
+                // 可以在这里更新UI，显示正在聆听状态
+                // display.setText("正在聆听...");
+            }
+
+            @Override
+            public void onRmsChanged(float rmsdB) {
+                //Log.i("SpeechRecognizer", "音量变化: " + rmsdB); // 音量变化回调，可以用于可视化音量
+            }
+
+            @Override
+            public void onBufferReceived(byte[] buffer) {
+                Log.i("SpeechRecognizer", "缓冲区接收: " + buffer.length);
+            }
+
+            @Override
+            public void onEndOfSpeech() {
+                Log.i("SpeechRecognizer", "说话结束");
+                // 可以在这里更新UI，显示正在处理状态
+                // display.setText("正在处理...");
+                // 识别结束，销毁 SpeechRecognizer
+                if (speechRecognizer != null) {
+                    speechRecognizer.destroy();
+                    speechRecognizer = null;
+                    Log.d("SpeechRecognizer", "SpeechRecognizer 在说话结束时销毁");
+                }
+                isListeningForSpeech = false; // 设置不在聆听状态
+                updateVoiceInputButtonState(); // 更新按钮UI
+            }
+
+            @Override
+            public void onError(int error) {
+                Log.e("SpeechRecognizer", "错误码: " + error);
+                String errorMessage = getErrorText(error); // 获取错误信息文本
+                Toast.makeText(CalculatorActivity.this, "语音识别错误: " + errorMessage, Toast.LENGTH_SHORT).show();
+                // 可以在这里更新UI，恢复按钮状态等
+                // display.setText("错误");
+                // 发生错误，销毁 SpeechRecognizer
+                if (speechRecognizer != null) {
+                    speechRecognizer.destroy();
+                    speechRecognizer = null;
+                    Log.e("SpeechRecognizer", "SpeechRecognizer 在错误时销毁");
+                }
+                isListeningForSpeech = false; // 设置不在聆听状态
+                updateVoiceInputButtonState(); // 更新按钮UI
+            }
+
+            @Override
+            public void onResults(Bundle results) {
+                Log.i("SpeechRecognizer", "识别结果返回");
+                ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                if (matches != null && !matches.isEmpty()) {
+                    String recognizedText = matches.get(0); // 获取最有可能的识别结果
+                    Log.d("SpeechRecognizer", "识别到的文本: " + recognizedText);
+
+                    // 在处理语音输入结果之前，先清空当前计算器状态
+                    currentInput = new StringBuilder("0");
+                    currentExpression = new StringBuilder();
+                    currentOperation = null;
+                    firstOperand = null;
+                    newNumber = true;
+                    display.setText("0");
+                    expressionDisplay.setText("");
+
+                    // 可以在这里添加语音播报"已清空"或者其他提示
+                    // speakResult("已清空");
+
+                    // 调用 processRecognizedText 解析文本，并获取解析后的字符串
+                    String processedExpression = processRecognizedText(recognizedText);
+                    // 将解析后的字符串传递给 handleExpressionInput 方法进行处理
+                    handleExpressionInput(processedExpression);
+                }
+                // 可以在这里更新UI，恢复按钮状态等
+                // 识别成功，销毁 SpeechRecognizer (已经在 onEndOfSpeech 中处理)
+            }
+
+            @Override
+            public void onPartialResults(Bundle partialResults) {
+                // Log.i("SpeechRecognizer", "部分结果"); // 如果需要处理部分结果可以启用
+            }
+
+            @Override
+            public void onEvent(int eventType, Bundle params) {
+                // Log.i("SpeechRecognizer", "事件: " + eventType); // 处理其他事件
+            }
+        });
+
+        // 创建语音识别Intent
+        Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.CHINA.toString()); // 设置语言为中文
+        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "请说话..."); // 提示用户说话
+
+        speechRecognizer.startListening(speechRecognizerIntent);
+        Log.d("SpeechRecognizer", "开始聆听...");
+        isListeningForSpeech = true; // 设置正在聆听状态
+        // 可以在这里更新麦克风按钮的UI，例如改变颜色或图标
+         updateVoiceInputButtonState();
+
+         // 启动语音识别时，停止语音播报
+         isMuted = true;
+         updateMuteButtonState();
+    }
+
+    // 新增方法：停止语音识别
+    private void stopVoiceRecognition() {
+        if (speechRecognizer != null && isListeningForSpeech) {
+            speechRecognizer.stopListening();
+            // SpeechRecognizer 会在 onEndOfSpeech 或 onError 中被销毁
+            isListeningForSpeech = false; // 设置不在聆听状态
+            updateVoiceInputButtonState(); // 更新按钮UI
+            Log.d("SpeechRecognizer", "停止聆听...");
+        }
+    }
+
+    // 新增方法：更新语音输入按钮状态
+    private void updateVoiceInputButtonState() {
+        if (btnVoiceInput != null) {
+             // 根据 isListeningForSpeech 状态更新按钮图标或颜色
+             // 例如：如果正在聆听，可以使用不同的 tint 或背景
+             btnVoiceInput.setColorFilter(isListeningForSpeech ?
+                 ContextCompat.getColor(this, R.color.colorPrimary) : // 正在聆听时的颜色
+                 ContextCompat.getColor(this, R.color.gray)); // 默认颜色
+        }
+    }
+
+    // 新增方法：处理识别到的文本
+    private String processRecognizedText(String text) {
+        // 将识别到的文本转换为计算器输入字符串
+
+        // 创建中文数字到阿拉伯数字的映射
+        Map<String, String> numberMap = new HashMap<>();
+        numberMap.put("零", "0");
+        numberMap.put("一", "1");
+        numberMap.put("二", "2");
+        numberMap.put("三", "3");
+        numberMap.put("四", "4");
+        numberMap.put("五", "5");
+        numberMap.put("六", "6");
+        numberMap.put("七", "7");
+        numberMap.put("八", "8");
+        numberMap.put("九", "9");
+        numberMap.put("点", "."); // 处理小数点
+
+        // 创建中文运算符到计算器符号的映射
+        Map<String, String> operatorMap = new HashMap<>();
+        operatorMap.put("加", "+");
+        operatorMap.put("减", "-");
+        operatorMap.put("乘", "×");
+        operatorMap.put("乘以", "×"); // 兼容"乘以"
+        operatorMap.put("除以", "÷"); // 兼容"除以"
+        operatorMap.put("除", "÷");
+        operatorMap.put("等于", "=");
+
+        String cleanedText = text.replace(" ", ""); // 移除空格方便处理
+        Log.d("SpeechRecognizer", "清洗后的文本: " + cleanedText);
+
+        StringBuilder processedInput = new StringBuilder();
+
+        // 改进解析逻辑：先替换中文数字和运算符关键词为符号，然后处理剩余字符
+        String tempText = cleanedText;
+
+        // 为了避免替换时出现部分匹配问题（例如先替换"一"再替换"十一"），
+        // 我们可以按词语长度降序排序，或者使用更复杂的匹配方式。
+        // 对于基础实现，我们简单地按顺序替换，这可能会有一些局限性。
+
+        // 先替换中文数字（避免影响包含数字的运算符关键词，如"乘以"）
+        for (Map.Entry<String, String> entry : numberMap.entrySet()) {
+            tempText = tempText.replace(entry.getKey(), entry.getValue());
+        }
+
+        // 然后替换运算符关键词
+        for (Map.Entry<String, String> entry : operatorMap.entrySet()) {
+            tempText = tempText.replace(entry.getKey(), entry.getValue());
+        }
+
+        // 现在 tempText 中应该大部分是数字、小数点和运算符符号了
+        // 我们再遍历一次，只保留数字、小数点和已知的运算符符号
+        for (char c : tempText.toCharArray()) {
+            String charStr = String.valueOf(c);
+            if (Character.isDigit(c) || charStr.equals(".") ||
+                charStr.equals("+") || charStr.equals("-") ||
+                charStr.equals("×") || charStr.equals("÷") ||
+                charStr.equals("=")) {
+                processedInput.append(charStr);
+            } else {
+                 // 忽略其他不能识别的字符
+            }
+        }
+
+        String finalInput = processedInput.toString();
+        Log.d("SpeechRecognizer", "解析后的输入字符串: " + finalInput);
+
+        return finalInput; // 返回解析后的字符串
+    }
+
+    // 新增方法：处理解析后的表达式字符串输入
+    private void handleExpressionInput(String expression) {
+        // 遍历解析后的表达式字符串，模拟按键输入
+        // 这里需要根据计算器的现有逻辑来决定如何馈送输入
+        for (char c : expression.toCharArray()) {
+            String inputChar = String.valueOf(c);
+
+            // 模拟数字按钮点击或小数点
+            if (Character.isDigit(c) || inputChar.equals(".")) {
+                // 使用现有的处理数字按钮的逻辑
+                setupNumberButtonInput(inputChar); // 调用一个辅助方法
+            } else if (inputChar.equals("+") || inputChar.equals("-") || inputChar.equals("×") || inputChar.equals("÷")) {
+                // 模拟运算符按钮点击
+                // 使用现有的处理运算符按钮的逻辑
+                 setupOperationButtonInput(inputChar); // 调用一个辅助方法
+            } else if (inputChar.equals("=")) {
+                // 模拟等于按钮点击
+                setupOperationButtonInput(inputChar); // 使用现有的处理等于按钮的逻辑
+            }
+             // 忽略其他字符
+        }
+    }
+
+    // 新增辅助方法：模拟数字按钮输入逻辑
+    private void setupNumberButtonInput(String number) {
+         if (newNumber || currentInput.toString().equals("0")) {
+             currentInput = new StringBuilder(number);
+             newNumber = false;
+         } else {
+             currentInput.append(number);
+         }
+         display.setText(currentInput.toString());
+         // 如果需要，可以在这里添加语音播报输入的数字
+         // speakResult(number);
+    }
+
+    // 新增辅助方法：模拟运算符按钮输入逻辑
+    private void setupOperationButtonInput(String operation) {
+        if (currentInput.length() > 0) {
+            try {
+                double number = Double.parseDouble(currentInput.toString());
+                if (operation.equals("=")) {
+                    if (firstOperand != null && currentOperation != null) {
+                        // 更新表达式显示
+                        currentExpression.append(currentInput);
+                        expressionDisplay.setText(currentExpression.toString());
+
+                        // 执行计算
+                        double result = performOperation(firstOperand, number, currentOperation);
+                        String formattedResult = formatResult(result);
+                        display.setText(formattedResult);
+                        currentInput = new StringBuilder(display.getText());
+
+                        // 保存到历史记录
+                        String fullExpression = currentExpression.toString();
+                        historyManager.saveHistory(fullExpression, formattedResult);
+
+                        // 如果需要，可以在这里添加语音播报结果
+                        // speakResult("等于");
+                        // new Handler().postDelayed(() -> speakResult(formattedResult), 800);
+
+                        // 重置状态
+                        currentExpression = new StringBuilder();
+                        firstOperand = null;
+                        currentOperation = null;
+                        newNumber = true; // 计算完成后准备输入新数字
+                    } else if (currentOperation == null) { // 如果没有进行中的运算，将当前结果作为下一个运算的第一个操作数
+                         firstOperand = number;
+                         currentOperation = operation;
+                         currentExpression = new StringBuilder(currentInput + operation);
+                         expressionDisplay.setText(currentExpression.toString());
+                         newNumber = true;
+                    }
+                } else { // 基本运算符
+                    if (firstOperand == null) {
+                        firstOperand = number;
+                        currentOperation = operation;
+                        currentExpression = new StringBuilder(currentInput + operation);
+                        expressionDisplay.setText(currentExpression.toString());
+                        newNumber = true;
+                    } else { // 连续运算
+                        // 执行上一个运算
+                        double result = performOperation(firstOperand, number, currentOperation);
+                        String formattedResult = formatResult(result);
+                        display.setText(formattedResult);
+                        currentInput = new StringBuilder(display.getText());
+
+                        // 设置当前运算为新的操作数和运算符
+                        firstOperand = result; // 将上一步结果作为第一个操作数
+                        currentOperation = operation;
+                        currentExpression = new StringBuilder(formattedResult + operation);
+                        expressionDisplay.setText(currentExpression.toString());
+                        newNumber = true;
+                         // 如果需要，可以在这里添加语音播报运算符
+                        // String operationText = "";
+                        // switch (operation) { ... speakResult(operationText); }
+                    }
+                }
+            } catch (Exception e) {
+                Toast.makeText(CalculatorActivity.this, "语音输入解析错误: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+                // 错误时重置状态
+                currentInput = new StringBuilder("0");
+                currentExpression = new StringBuilder();
+                currentOperation = null;
+                firstOperand = null;
+                display.setText("0");
+                expressionDisplay.setText("");
+                newNumber = true;
+            }
+        }
+    }
+
+    // 新增方法：获取SpeechRecognizer错误文本描述
+    public static String getErrorText(int errorCode) {
+        String message;
+        switch (errorCode) {
+            case 3: // SpeechRecognizer.ERROR_AUDIO_ERROR:
+                message = "音频错误";
+                break;
+            case 5: // SpeechRecognizer.ERROR_CLIENT:
+                message = "客户端错误";
+                break;
+            case 9: // SpeechRecognizer.ERROR_INSUFFICIENT_PERMISSIONS:
+                message = "权限不足";
+                break;
+            case 2: // SpeechRecognizer.ERROR_NETWORK:
+                message = "网络错误";
+                break;
+            case 1: // SpeechRecognizer.ERROR_NETWORK_TIMEOUT:
+                message = "网络超时";
+                break;
+            case 7: // SpeechRecognizer.ERROR_NO_MATCH:
+                message = "未识别到匹配项";
+                break;
+            case 8: // SpeechRecognizer.ERROR_RECOGNIZER_BUSY:
+                message = "识别服务忙";
+                break;
+            case 4: // SpeechRecognizer.ERROR_SERVER:
+                message = "服务器错误";
+                break;
+            case 6: // SpeechRecognizer.ERROR_SPEECH_TIMEOUT:
+                message = "说话超时";
+                break;
+            default:
+                message = "未知错误";
+                break;
+        }
+        return message;
+    }
+
+    // 处理权限请求结果
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_RECORD_AUDIO_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // 权限已授予
+                Log.d("Permissions", "录音权限已授予");
+                // 提示用户再次点击按钮以启动语音输入
+                Toast.makeText(this, "录音权限已授予，请再次点击麦克风按钮开始语音输入", Toast.LENGTH_LONG).show();
+            } else {
+                // 权限被拒绝
+                Log.w("Permissions", "录音权限被拒绝");
+                Toast.makeText(this, "录音权限被拒绝，无法使用语音输入功能", Toast.LENGTH_LONG).show();
+                // 禁用语音输入按钮
+                if (btnVoiceInput != null) {
+                    btnVoiceInput.setEnabled(false);
+                }
+            }
+        }
     }
 } 
