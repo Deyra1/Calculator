@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">calculator</string>
-    <string name="app_version">V1.0.0</string>
-    <string name="version_display">版本号 V1.0.0</string>
+    <string name="app_version">V1.0.7</string>
+    <string name="version_display">版本号 V1.0.7</string>
 </resources>
