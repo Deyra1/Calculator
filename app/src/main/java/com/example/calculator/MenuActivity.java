@@ -6,19 +6,37 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.view.LayoutInflater;
+import android.widget.RadioGroup;
+import android.widget.RadioButton;
+import android.content.SharedPreferences;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MenuActivity extends AppCompatActivity {
     private String username;
+    private SharedPreferences sharedPreferences;
+    private static final String PREFS_NAME = "ThemePrefs";
+    private static final String THEME_KEY = "selectedTheme";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
+        // Apply saved theme before setting content view
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        int savedTheme = sharedPreferences.getInt(THEME_KEY, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        AppCompatDelegate.setDefaultNightMode(savedTheme);
+
         try {
             setContentView(R.layout.activity_menu);
             
+            // 更新主题菜单项旁的文本
+            updateThemeText();
+
             // 获取传递过来的用户名
             username = getIntent().getStringExtra("username");
             if (username == null || username.isEmpty()) {
@@ -80,7 +98,15 @@ public class MenuActivity extends AppCompatActivity {
             }
             
             // 设置主题菜单项
-            setupMenuItem(R.id.menuItemTheme, "主题设置功能待实现");
+            View menuItemTheme = findViewById(R.id.menuItemTheme);
+            if (menuItemTheme != null) {
+                menuItemTheme.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showThemeSelectionDialog();
+                    }
+                });
+            }
             
             // 设置"退出登录"按钮
             Button btnLogout = findViewById(R.id.btnLogout);
@@ -102,6 +128,66 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
     
+    private void showThemeSelectionDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("选择主题");
+
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogLayout = inflater.inflate(R.layout.activity_settings, null);
+        RadioGroup themeRadioGroup = dialogLayout.findViewById(R.id.themeRadioGroup);
+
+        // Load saved theme preference
+        int savedTheme = sharedPreferences.getInt(THEME_KEY, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        switch (savedTheme) {
+            case AppCompatDelegate.MODE_NIGHT_NO:
+                themeRadioGroup.check(R.id.radioLight);
+                break;
+            case AppCompatDelegate.MODE_NIGHT_YES:
+                themeRadioGroup.check(R.id.radioDark);
+                break;
+            case AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM:
+            default:
+                themeRadioGroup.check(R.id.radioSystem);
+                break;
+        }
+
+        themeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int selectedTheme;
+                if (checkedId == R.id.radioLight) {
+                    selectedTheme = AppCompatDelegate.MODE_NIGHT_NO;
+                } else if (checkedId == R.id.radioDark) {
+                    selectedTheme = AppCompatDelegate.MODE_NIGHT_YES;
+                } else {
+                    selectedTheme = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+                }
+
+                // Save and apply theme preference
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt(THEME_KEY, selectedTheme);
+                editor.apply();
+
+                AppCompatDelegate.setDefaultNightMode(selectedTheme);
+                 // Optionally close the dialog after selection, or keep it open.
+                 // For now, let's keep it open until the user dismisses it.
+                recreate(); // Recreate activity to apply the new theme
+            }
+        });
+
+        builder.setView(dialogLayout);
+
+        // Add a neutral button to dismiss the dialog
+        builder.setNeutralButton("关闭", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.create().show();
+    }
+    
     private void setupMenuItem(int itemId, final String message) {
         View menuItem = findViewById(itemId);
         if (menuItem != null) {
@@ -121,5 +207,26 @@ public class MenuActivity extends AppCompatActivity {
         textView.setTextSize(20);
         textView.setPadding(50, 50, 50, 50);
         return textView;
+    }
+
+    private void updateThemeText() {
+        TextView currentThemeTextView = findViewById(R.id.currentThemeText);
+        if (currentThemeTextView != null) {
+            int currentMode = AppCompatDelegate.getDefaultNightMode();
+            String themeText;
+            switch (currentMode) {
+                case AppCompatDelegate.MODE_NIGHT_NO:
+                    themeText = "浅色模式";
+                    break;
+                case AppCompatDelegate.MODE_NIGHT_YES:
+                    themeText = "深色模式";
+                    break;
+                case AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM:
+                default:
+                    themeText = "跟随系统";
+                    break;
+            }
+            currentThemeTextView.setText(themeText);
+        }
     }
 } 

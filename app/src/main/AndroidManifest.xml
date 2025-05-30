@@ -39,7 +39,7 @@
         <activity 
             android:name=".CalculatorActivity"
             android:theme="@style/Theme.AppCompatCalculator"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:windowSoftInputMode="adjustPan" />
         <activity 

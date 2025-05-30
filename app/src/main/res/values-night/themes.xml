@@ -1,0 +1,37 @@
+<resources>
+    <!-- Dark Theme based on AppCompat -->
+    <style name="Theme.AppCompatCalculator" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Inherit colors from values-night/colors.xml -->
+        <item name="colorPrimary">@color/colorPrimary_dark</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark_dark</item>
+        <item name="colorAccent">@color/colorAccent</item> <!-- Assuming accent color remains the same or is defined elsewhere -->
+
+        <!-- Custom Color Attributes mapped to dark mode colors -->
+        <item name="backgroundColor">@color/colorBackground_dark</item>
+        <item name="textColorPrimary">@color/textColorPrimary_dark</item>
+        <item name="textColorSecondary">@color/textColorSecondary_dark</item>
+        <item name="buttonBackgroundColor">@color/buttonBackground_dark</item>
+        <item name="buttonTextColor">@color/textColorPrimary_dark</item> <!-- Buttons text color is primary text color -->
+        <item name="operatorButtonBackgroundColor">@color/colorPrimary_dark</item> <!-- Operator buttons use primary color -->
+        <item name="operatorButtonTextColor">@color/textColorPrimary_dark</item> <!-- Operator button text color is primary text color -->
+        <item name="clearButtonTextColor">@color/colorPrimary_dark</item> <!-- Clear button text color is primary color -->
+        <item name="displayBackgroundColor">@color/displayBackground_dark</item>
+        <item name="displayTextPrimaryColor">@color/textColorPrimary_dark</item>
+        <item name="displayTextSecondaryColor">@color/textColorSecondary_dark</item>
+        <item name="cardBackgroundColor">@color/buttonBackground_dark</item> <!-- Card background same as button background in dark mode -->
+        <item name="dividerColor">@color/textColorSecondary_dark</item> <!-- Divider color same as secondary text color -->
+        <item name="iconTint">@color/textColorSecondary_dark</item> <!-- Icon tint same as secondary text color -->
+
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">?attr/colorPrimaryDark</item>
+        <item name="android:windowLightStatusBar">false</item> <!-- Dark status bar for dark theme -->
+        <item name="buttonTextColorOnPrimary">@color/buttonTextColorOnPrimary</item>
+
+        <!-- Window background -->
+        <item name="android:windowBackground">?attr/backgroundColor</item>
+
+        <!-- Button Style - Referencing the same style, which now uses theme attributes -->
+        <item name="buttonStyle">@style/CalculatorButton</item>
+
+    </style>
+</resources> 

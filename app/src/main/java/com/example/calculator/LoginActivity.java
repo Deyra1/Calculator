@@ -7,6 +7,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.util.Log;
+import android.content.SharedPreferences;
+import androidx.preference.PreferenceManager;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,6 +22,13 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
+            // 读取并应用主题偏好设置
+            SharedPreferences preferences = getSharedPreferences("ThemePrefs", MODE_PRIVATE);
+            int themeMode = preferences.getInt("selectedTheme", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+            
+            // 根据偏好设置应用主题
+            AppCompatDelegate.setDefaultNightMode(themeMode);
+
             super.onCreate(savedInstanceState);
             
             // 在设置布局之前进行错误捕获
@@ -57,8 +67,15 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     try {
-                        String username = usernameInput.getText().toString();
-                        String password = passwordInput.getText().toString();
+                        // 获取输入内容前先检查输入框是否为空
+                        if (usernameInput == null || passwordInput == null) {
+                            Log.e(TAG, "Input fields are null");
+                            Toast.makeText(LoginActivity.this, "输入框初始化失败，请重试", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        
+                        String username = usernameInput.getText().toString().trim();
+                        String password = passwordInput.getText().toString().trim();
                         
                         // 验证用户名和密码
                         if (username.equals(USERNAME) && password.equals(PASSWORD)) {
