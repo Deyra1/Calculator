@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#e8f5e8">
+    android:background="?attr/backgroundColor">
 
     <!-- 顶部功能区 - 与计算器页面保持一致 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#e8f5e8"
+        android:background="?attr/backgroundColor"
         android:orientation="horizontal"
         android:padding="12dp">
 
@@ -23,7 +23,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="返回"
             android:src="@drawable/back"
-            android:tint="#666666" />
+            android:tint="?attr/iconTint" />
 
         <!-- 标题部分 -->
         <LinearLayout
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="关于我们"
-                android:textColor="#4CAF50"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -53,7 +53,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#e8f5e8">
+        android:background="?attr/backgroundColor">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -66,7 +66,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="#F5F5F5"
+                app:cardBackgroundColor="?attr/cardBackgroundColor"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
 
@@ -81,7 +81,7 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:src="@mipmap/ic_launcher"
-                        android:background="#F5F5F5"
+                        android:background="?attr/cardBackgroundColor"
                         android:padding="8dp" />
 
                     <TextView
@@ -91,14 +91,14 @@
                         android:textSize="24sp"
                         android:textStyle="bold"
                         android:layout_marginTop="8dp"
-                        android:textColor="#333333" />
+                        android:textColor="?attr/textColorPrimary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/app_version"
                         android:textSize="16sp"
-                        android:textColor="#666666" />
+                        android:textColor="?attr/textColorSecondary" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -107,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="#F5F5F5"
+                app:cardBackgroundColor="?attr/cardBackgroundColor"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
 
@@ -123,7 +123,7 @@
                         android:text="项目简介"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="#4CAF50"
+                        android:textColor="?attr/colorPrimary"
                         android:layout_marginBottom="8dp" />
 
                     <TextView
@@ -131,7 +131,7 @@
                         android:layout_height="wrap_content"
                         android:text="本应用是Android开发课程的期末项目，实现了基本的计算器功能，包括基础计算、科学计算以及用户登录等功能。"
                         android:textSize="16sp"
-                        android:textColor="#333333" />
+                        android:textColor="?attr/textColorPrimary" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -140,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="#F5F5F5"
+                app:cardBackgroundColor="?attr/cardBackgroundColor"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
 
@@ -156,7 +156,7 @@
                         android:text="功能特点"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="#4CAF50"
+                        android:textColor="?attr/colorPrimary"
                         android:layout_marginBottom="8dp" />
 
                     <TextView
@@ -164,7 +164,7 @@
                         android:layout_height="wrap_content"
                         android:text="1. 基础计算功能\n2. 科学计算功能\n3. 进制转换功能\n4. 历史记录查看\n5. 用户登录注册\n6. TTL"
                         android:textSize="16sp"
-                        android:textColor="#333333" />
+                        android:textColor="?attr/textColorPrimary" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -173,7 +173,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="#F5F5F5"
+                app:cardBackgroundColor="?attr/cardBackgroundColor"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
 
@@ -189,7 +189,7 @@
                         android:text="技术实现"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="#4CAF50"
+                        android:textColor="?attr/colorPrimary"
                         android:layout_marginBottom="8dp" />
 
                     <TextView
@@ -197,7 +197,7 @@
                         android:layout_height="wrap_content"
                         android:text="- Activity和布局设计\n- Intent和Activity跳转\n- 广播接收器\n- 用户界面设计\n- 事件处理\n- Java面向对象编程"
                         android:textSize="16sp"
-                        android:textColor="#333333" />
+                        android:textColor="?attr/textColorPrimary" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -206,7 +206,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="#F5F5F5"
+                app:cardBackgroundColor="?attr/cardBackgroundColor"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
 
@@ -222,7 +222,7 @@
                         android:text="开发团队"
                         android:textSize="18sp"
                         android:textStyle="bold"
-                        android:textColor="#4CAF50"
+                        android:textColor="?attr/colorPrimary"
                         android:layout_marginBottom="8dp" />
 
                     <TextView
@@ -230,7 +230,7 @@
                         android:layout_height="wrap_content"
                         android:text="小组成员：\n- 代樾\n- 吴紫玉\n- 高嘉洁"
                         android:textSize="16sp"
-                        android:textColor="#333333" />
+                        android:textColor="?attr/textColorPrimary" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -240,7 +240,7 @@
                 android:layout_height="wrap_content"
                 android:text="© 2025 计算器项目小组 版权所有"
                 android:textSize="14sp"
-                android:textColor="#4CAF50"
+                android:textColor="?attr/colorPrimary"
                 android:gravity="center"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="16dp" />

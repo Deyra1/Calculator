@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    app:cardBackgroundColor="#FFFFFF"
+    app:cardBackgroundColor="?attr/cardBackgroundColor"
     app:cardCornerRadius="12dp"
     app:cardElevation="2dp">
 
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="722+46.2"
-            android:textColor="#666666"
+            android:textColor="?attr/textColorSecondary"
             android:textSize="16sp"
             android:gravity="end" />
 
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="768.2"
-            android:textColor="#333333"
+            android:textColor="?attr/textColorPrimary"
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="end"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="2024-06-15 14:30:25"
-            android:textColor="#999999"
+            android:textColor="?attr/textColorSecondary"
             android:textSize="12sp"
             android:layout_marginTop="8dp" />
     </LinearLayout>

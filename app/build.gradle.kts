@@ -45,6 +45,7 @@ dependencies {
     implementation("androidx.core:core:1.12.0")
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("androidx.preference:preference:1.2.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

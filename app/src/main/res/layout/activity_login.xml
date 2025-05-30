@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e8f7f0">
+    android:background="@color/colorBackground">
 
     <!-- Title section -->
     <TextView
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Log in"
         android:textSize="28sp"
-        android:textColor="#000000"
+        android:textColor="@color/textColorPrimary"
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"/>
@@ -24,12 +24,13 @@
         android:layout_below="@id/titleText"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:src="@drawable/juice" />
+        android:src="@drawable/calculator_icon"
+        android:contentDescription="Calculator icon" />
 
     <!-- Form section -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="319dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/juiceImage"
         android:layout_marginTop="9dp"
         android:orientation="vertical"
@@ -42,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="Account"
-            android:textColor="#000000"
+            android:textColor="@color/textColorPrimary"
             android:textSize="16sp" />
 
         <EditText
@@ -53,7 +54,11 @@
             android:background="@drawable/rounded_edit_text"
             android:elevation="4dp"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp" />
+            android:paddingRight="15dp"
+            android:textColor="@color/textColorPrimary"
+            android:inputType="text"
+            android:hint="Enter username"
+            android:textColorHint="@color/textColorSecondary" />
 
         <TextView
             android:id="@+id/passwordLabel"
@@ -61,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="Password"
-            android:textColor="#000000"
+            android:textColor="@color/textColorPrimary"
             android:textSize="16sp" />
 
         <EditText
@@ -73,7 +78,10 @@
             android:elevation="4dp"
             android:inputType="textPassword"
             android:paddingLeft="15dp"
-            android:paddingRight="15dp" />
+            android:paddingRight="15dp"
+            android:textColor="@color/textColorPrimary"
+            android:hint="Enter password"
+            android:textColorHint="@color/textColorSecondary" />
 
         <Button
             android:id="@+id/loginButton"
@@ -84,7 +92,7 @@
             android:elevation="4dp"
             android:text="Login"
             android:textAllCaps="false"
-            android:textColor="#FFFFFF"
+            android:textColor="@android:color/white"
             android:textSize="18sp" />
     </LinearLayout>
 </RelativeLayout> 

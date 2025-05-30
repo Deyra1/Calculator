@@ -6,22 +6,37 @@
     <!-- 基于AppCompat的主题 -->
     <style name="Theme.AppCompatCalculator" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- 主要颜色 -->
-        <item name="colorPrimary">#333333</item>
-        <item name="colorPrimaryDark">#e8f7f0</item>
-        <item name="colorAccent">#FFDD55</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- 自定义颜色属性 -->
+        <item name="backgroundColor">@color/colorBackground</item>
+        <item name="textColorPrimary">@color/textColorPrimary</item>
+        <item name="textColorSecondary">@color/textColorSecondary</item>
+        <item name="buttonBackgroundColor">@color/buttonBackground</item>
+        <item name="buttonTextColor">@color/buttonTextColor</item>
+        <item name="operatorButtonBackgroundColor">@color/operatorButtonBackground</item>
+        <item name="operatorButtonTextColor">@color/operatorButtonTextColor</item>
+        <item name="clearButtonTextColor">@color/clearButtonTextColor</item>
+        <item name="displayBackgroundColor">@color/displayBackground</item>
+        <item name="displayTextPrimaryColor">@color/displayTextPrimary</item>
+        <item name="displayTextSecondaryColor">@color/displayTextSecondary</item>
+        <item name="cardBackgroundColor">@color/cardBackground</item>
+        <item name="dividerColor">@color/divider</item>
+        <item name="iconTint">@color/iconTint</item>
+        <item name="buttonTextColorOnPrimary">@color/buttonTextColorOnPrimary</item>
         
         <!-- 状态栏颜色 -->
-        <item name="android:statusBarColor">#e8f7f0</item>
+        <item name="android:statusBarColor">?attr/colorPrimaryDark</item>
         <item name="android:windowLightStatusBar">true</item>
         
         <!-- 窗口背景 -->
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">?attr/backgroundColor</item>
         
         <!-- 按钮样式 -->
         <item name="buttonStyle">@style/CalculatorButton</item>
-        
-        <!-- 文本颜色 -->
-        <item name="android:textColorPrimary">#333333</item>
-        <item name="android:textColorSecondary">#666666</item>
     </style>
+
+
 </resources>

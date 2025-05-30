@@ -1,15 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Custom Light Mode Colors -->
     <color name="colorPrimary">#69C261</color>
     <color name="colorPrimaryLight">#A0E199</color>
     <color name="colorPrimaryDark">#4A9E43</color>
+
     <color name="colorBackground">#e8f5e8</color>
+    <color name="textColorPrimary">#333333</color>
+    <color name="textColorSecondary">#666666</color>
+    <color name="buttonBackground">#ffffff</color>
+    <color name="buttonTextColor">#333333</color>
+    <color name="operatorButtonBackground">#69C261</color> <!-- Using colorPrimary for operators -->
+    <color name="operatorButtonTextColor">#69C261</color>
+    <color name="clearButtonTextColor">#4CAF50</color>
+    <color name="displayBackground">#e8f5e8</color> <!-- Same as colorBackground -->
+    <color name="displayTextPrimary">#333333</color> <!-- Same as textColorPrimary -->
+    <color name="displayTextSecondary">#666666</color> <!-- Same as textColorSecondary -->
+    <color name="cardBackground">#ffffff</color> <!-- Same as buttonBackground -->
+    <color name="divider">#EEEEEE</color>
+    <color name="iconTint">#666666</color> <!-- Same as textColorSecondary -->
     <color name="gray">#808080</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="buttonTextColorOnPrimary">#FFFFFF</color>
 </resources>

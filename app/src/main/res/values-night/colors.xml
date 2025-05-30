@@ -1,0 +1,24 @@
+<resources>
+    <!-- Dark Mode Colors -->
+    <color name="colorPrimaryLight_dark">#AED581</color>
+    <color name="colorPrimaryDark_dark">#558B2F</color>
+    <color name="colorBackground_dark">#121212</color>
+    <color name="textColorPrimary_dark">#FFFFFF</color>
+    <color name="textColorSecondary_dark">#B0B0B0</color>
+    <color name="buttonBackground_dark">#333333</color>
+    <color name="buttonPressed_dark">#444444</color>
+    <color name="displayBackground_dark">#1E1E1E</color>
+    <color name="gray_dark">#A9A9A9</color>
+
+    <!-- 使用现有颜色作为默认值或在需要的地方引用 -->
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary colors (Dark Mode) -->
+    <color name="colorPrimary_dark">#8BC34A</color>
+
+    <!-- Theme colors (Dark Mode) -->
+    <color name="operatorButtonBackground_dark">#424242</color>
+    <color name="buttonTextColorOnPrimary_dark">#FFFFFF</color>
+
+</resources> 

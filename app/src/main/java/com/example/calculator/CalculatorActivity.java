@@ -22,6 +22,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.PreferenceManager;
 
 import com.example.calculator.model.HistoryItem;
 import com.example.calculator.utils.HistoryManager;
@@ -33,6 +35,9 @@ import java.util.ArrayList;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import java.util.Map;
+import android.content.SharedPreferences;
+import android.content.pm.ResolveInfo;
+import android.content.ActivityNotFoundException;
 
 public class CalculatorActivity extends AppCompatActivity {
     private TextView display;
@@ -55,14 +60,18 @@ public class CalculatorActivity extends AppCompatActivity {
 
     private boolean isListeningForSpeech = false; // 标记是否正在进行语音输入
 
+    // 添加常量
+    private static final int REQUEST_CODE_SPEECH_INPUT = 100;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // 禁用模拟器OpenGL警告
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            android.opengl.EGL14.eglGetError(); // 清除可能的错误标志
-        }
-        
         super.onCreate(savedInstanceState);
+        // 读取并应用主题偏好设置
+        SharedPreferences preferences = getSharedPreferences("ThemePrefs", MODE_PRIVATE);
+        int themeMode = preferences.getInt("selectedTheme", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        
+        // 根据偏好设置应用主题
+        AppCompatDelegate.setDefaultNightMode(themeMode);
         
         try {
             setContentView(R.layout.activity_calculator);
@@ -256,9 +265,22 @@ public class CalculatorActivity extends AppCompatActivity {
     
     private void setupTopBar() {
         try {
+            // 获取导航栏布局中的控件
+            View navBar = findViewById(R.id.nav_bar);
+            if (navBar == null) {
+                Log.e("CalculatorActivity", "Navigation bar not found");
+                return;
+            }
+            
             // 设置菜单按钮点击事件
-            ImageButton btnMenu = findViewById(R.id.btnMenu);
-            if (btnMenu != null) {
+            ImageButton btnMenu = navBar.findViewById(R.id.btnMenu);
+            ImageButton btnBack = navBar.findViewById(R.id.btnBack);
+            
+            // 在计算器页面，显示菜单按钮，隐藏返回按钮
+            if (btnMenu != null && btnBack != null) {
+                btnMenu.setVisibility(View.VISIBLE);
+                btnBack.setVisibility(View.GONE);
+                
                 btnMenu.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -272,85 +294,98 @@ public class CalculatorActivity extends AppCompatActivity {
                 });
             }
             
-            // 设置选项卡点击事件
-            setupTab(R.id.tabBasic, "基础");
-            setupTab(R.id.tabBinary, "二进制转换");
+            // 设置选项卡样式
+            TextView tabBasic = navBar.findViewById(R.id.tabBasic);
+            TextView tabBinary = navBar.findViewById(R.id.tabBinary);
             
-            // 设置音量按钮点击事件
-            setupVolumeButton();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private void setupVolumeButton() {
-        final ImageButton btnMute = findViewById(R.id.btnMute);
-        if (btnMute != null) {
-            btnMute.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 如果语音输入正在进行，先停止语音输入
-                    if (isListeningForSpeech) {
-                        stopVoiceRecognition();
-                    }
-
-                    if (!isTTSInitialized) {
-                        // 如果TTS未初始化，尝试重新初始化
-                        initializeTextToSpeech();
-                        Toast.makeText(getApplicationContext(), "正在初始化语音系统...", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    isMuted = !isMuted;
-                    updateMuteButtonState();
-                }
-            });
-            // 设置初始状态
-            btnMute.setImageResource(R.drawable.volume_off);
-        }
-    }
-    
-    private void setupTab(int tabId, final String tabName) {
-        TextView tabView = findViewById(tabId);
-        if (tabView != null) {
-            tabView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // 处理二进制转换标签的点击
-                    if (tabId == R.id.tabBinary) {
+            if (tabBasic != null && tabBinary != null) {
+                // 设置当前页面标签样式
+                tabBasic.setTextColor(getResources().getColor(R.color.colorPrimary));
+                tabBasic.setTypeface(null, android.graphics.Typeface.BOLD);
+                
+                // 设置其他标签样式
+                tabBinary.setTextColor(getResources().getColor(android.R.color.darker_gray));
+                tabBinary.setTypeface(null, android.graphics.Typeface.NORMAL);
+                
+                // 设置标签点击事件
+                tabBinary.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 跳转到进制转换页面
                         Intent binaryIntent = new Intent(CalculatorActivity.this, BinaryConverterActivity.class);
                         // 传递当前登录的用户名
                         binaryIntent.putExtra("username", getIntent().getStringExtra("username") != null ? 
                             getIntent().getStringExtra("username") : "admin");
                         startActivity(binaryIntent);
-                        return;
                     }
-                    
-                    // 重置所有选项卡样式
-                    TextView tabBasic = findViewById(R.id.tabBasic);
-                    if (tabBasic != null) {
-                        tabBasic.setTextColor(getResources().getColor(android.R.color.darker_gray));
-                        tabBasic.setTextSize(18);
-                        tabBasic.setTypeface(null, android.graphics.Typeface.NORMAL);
+                });
+                
+                // 基础标签点击不需要处理，因为已经在基础页面
+            }
+            
+            // 设置音量按钮点击事件
+            setupVolumeButton();
+        } catch (Exception e) {
+            Log.e("CalculatorActivity", "Error setting up top bar: " + e.getMessage(), e);
+        }
+    }
+    
+    private void setupVolumeButton() {
+        try {
+            // 获取导航栏布局中的音量按钮
+            View navBar = findViewById(R.id.nav_bar);
+            if (navBar == null) {
+                Log.e("CalculatorActivity", "Navigation bar not found");
+                return;
+            }
+            
+            ImageButton btnMute = navBar.findViewById(R.id.btnMute);
+            if (btnMute != null) {
+                // 获取当前音量状态
+                SharedPreferences preferences = getSharedPreferences("CalculatorPrefs", MODE_PRIVATE);
+                boolean isMuted = preferences.getBoolean("isMuted", false);
+                
+                // 设置初始图标
+                btnMute.setImageResource(isMuted ? R.drawable.volume_off : R.drawable.volume_on);
+                
+                // 设置点击事件
+                btnMute.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 切换音量状态
+                        SharedPreferences prefs = getSharedPreferences("CalculatorPrefs", MODE_PRIVATE);
+                        boolean currentMuted = prefs.getBoolean("isMuted", false);
+                        boolean newMuted = !currentMuted;
+                        
+                        // 保存新的音量状态
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putBoolean("isMuted", newMuted);
+                        editor.apply();
+                        
+                        // 更新按钮图标
+                        btnMute.setImageResource(newMuted ? R.drawable.volume_off : R.drawable.volume_on);
+                        
+                        // 显示提示
+                        Toast.makeText(CalculatorActivity.this, 
+                            newMuted ? "已关闭按键音效" : "已开启按键音效", 
+                            Toast.LENGTH_SHORT).show();
                     }
-                    
-                    TextView tabBinary = findViewById(R.id.tabBinary);
-                    if (tabBinary != null) {
-                        tabBinary.setTextColor(getResources().getColor(android.R.color.darker_gray));
-                        tabBinary.setTextSize(18);
-                        tabBinary.setTypeface(null, android.graphics.Typeface.NORMAL);
+                });
+            }
+            
+            // 设置语音输入按钮
+            ImageButton btnVoiceInput = navBar.findViewById(R.id.btnVoiceInput);
+            if (btnVoiceInput != null) {
+                btnVoiceInput.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 启动语音输入
+                        startVoiceInput();
                     }
-                    
-                    // 设置当前选项卡的样式
-                    TextView currentTab = findViewById(tabId);
-                    if (currentTab != null) {
-                        currentTab.setTextColor(getResources().getColor(android.R.color.white));
-                        currentTab.setTextSize(18);
-                        currentTab.setTypeface(null, android.graphics.Typeface.BOLD);
-                    }
-                    
-                    Toast.makeText(CalculatorActivity.this, tabName + " 模式已选择", Toast.LENGTH_SHORT).show();
-                }
-            });
+                });
+            }
+        } catch (Exception e) {
+            Log.e("CalculatorActivity", "Error setting up volume button: " + e.getMessage(), e);
         }
     }
     
@@ -393,15 +428,19 @@ public class CalculatorActivity extends AppCompatActivity {
                 });
             }
             
-            // 删除按钮
-            Button btnDelete = findViewById(R.id.btnDelete);
+            // 设置删除按钮
+            ImageButton btnDelete = findViewById(R.id.btnDelete);
             if (btnDelete != null) {
+                // 设置删除按钮的颜色为主题色
+                int themeColor = getResources().getColor(R.color.colorPrimary);
+                btnDelete.setColorFilter(themeColor);
                 btnDelete.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (currentInput.length() > 0) {
                             if (currentInput.length() == 1) {
                                 currentInput = new StringBuilder("0");
+                                newNumber = true;
                             } else {
                                 currentInput.deleteCharAt(currentInput.length() - 1);
                             }
@@ -614,7 +653,7 @@ public class CalculatorActivity extends AppCompatActivity {
                             ActivityCompat.requestPermissions(CalculatorActivity.this, new String[]{android.Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO_PERMISSION);
                         } else {
                             // 权限已授予，开始语音识别
-                            startVoiceRecognition();
+                            startVoiceInput();
                         }
                     }
                 });
@@ -630,128 +669,32 @@ public class CalculatorActivity extends AppCompatActivity {
         updateVoiceInputButtonState();
     }
 
-    private void startVoiceRecognition() {
-        // 在这里创建并初始化 SpeechRecognizer
-        if (speechRecognizer != null) {
-            // 如果 SpeechRecognizer 已经存在，先销毁（防止重复创建或状态异常）
-            speechRecognizer.destroy();
-            speechRecognizer = null;
+    private void startVoiceInput() {
+        try {
+            // 检查是否有语音识别功能
+            PackageManager pm = getPackageManager();
+            List<ResolveInfo> activities = pm.queryIntentActivities(
+                    new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH), 0);
+            if (activities.size() == 0) {
+                Toast.makeText(this, "您的设备不支持语音识别", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            
+            // 创建语音识别意图
+            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.CHINESE.toString());
+            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "请说出您要计算的表达式");
+            
+            try {
+                startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this, "您的设备不支持语音识别", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Log.e("CalculatorActivity", "Error starting voice input: " + e.getMessage(), e);
+            Toast.makeText(this, "启动语音输入失败", Toast.LENGTH_SHORT).show();
         }
-
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-        speechRecognizer.setRecognitionListener(new RecognitionListener() {
-            @Override
-            public void onReadyForSpeech(Bundle params) {
-                Log.i("SpeechRecognizer", "准备就绪");
-                // 可以在这里更新UI，提示用户可以开始说话
-                // display.setText("请说话...");
-                Toast.makeText(CalculatorActivity.this, "请说话...", Toast.LENGTH_SHORT).show(); // 添加提示
-            }
-
-            @Override
-            public void onBeginningOfSpeech() {
-                Log.i("SpeechRecognizer", "开始说话");
-                // 可以在这里更新UI，显示正在聆听状态
-                // display.setText("正在聆听...");
-            }
-
-            @Override
-            public void onRmsChanged(float rmsdB) {
-                //Log.i("SpeechRecognizer", "音量变化: " + rmsdB); // 音量变化回调，可以用于可视化音量
-            }
-
-            @Override
-            public void onBufferReceived(byte[] buffer) {
-                Log.i("SpeechRecognizer", "缓冲区接收: " + buffer.length);
-            }
-
-            @Override
-            public void onEndOfSpeech() {
-                Log.i("SpeechRecognizer", "说话结束");
-                // 可以在这里更新UI，显示正在处理状态
-                // display.setText("正在处理...");
-                // 识别结束，销毁 SpeechRecognizer
-                if (speechRecognizer != null) {
-                    speechRecognizer.destroy();
-                    speechRecognizer = null;
-                    Log.d("SpeechRecognizer", "SpeechRecognizer 在说话结束时销毁");
-                }
-                isListeningForSpeech = false; // 设置不在聆听状态
-                updateVoiceInputButtonState(); // 更新按钮UI
-            }
-
-            @Override
-            public void onError(int error) {
-                Log.e("SpeechRecognizer", "错误码: " + error);
-                String errorMessage = getErrorText(error); // 获取错误信息文本
-                Toast.makeText(CalculatorActivity.this, "语音识别错误: " + errorMessage, Toast.LENGTH_SHORT).show();
-                // 可以在这里更新UI，恢复按钮状态等
-                // display.setText("错误");
-                // 发生错误，销毁 SpeechRecognizer
-                if (speechRecognizer != null) {
-                    speechRecognizer.destroy();
-                    speechRecognizer = null;
-                    Log.e("SpeechRecognizer", "SpeechRecognizer 在错误时销毁");
-                }
-                isListeningForSpeech = false; // 设置不在聆听状态
-                updateVoiceInputButtonState(); // 更新按钮UI
-            }
-
-            @Override
-            public void onResults(Bundle results) {
-                Log.i("SpeechRecognizer", "识别结果返回");
-                ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                if (matches != null && !matches.isEmpty()) {
-                    String recognizedText = matches.get(0); // 获取最有可能的识别结果
-                    Log.d("SpeechRecognizer", "识别到的文本: " + recognizedText);
-
-                    // 在处理语音输入结果之前，先清空当前计算器状态
-                    currentInput = new StringBuilder("0");
-                    currentExpression = new StringBuilder();
-                    currentOperation = null;
-                    firstOperand = null;
-                    newNumber = true;
-                    display.setText("0");
-                    expressionDisplay.setText("");
-
-                    // 可以在这里添加语音播报"已清空"或者其他提示
-                    // speakResult("已清空");
-
-                    // 调用 processRecognizedText 解析文本，并获取解析后的字符串
-                    String processedExpression = processRecognizedText(recognizedText);
-                    // 将解析后的字符串传递给 handleExpressionInput 方法进行处理
-                    handleExpressionInput(processedExpression);
-                }
-                // 可以在这里更新UI，恢复按钮状态等
-                // 识别成功，销毁 SpeechRecognizer (已经在 onEndOfSpeech 中处理)
-            }
-
-            @Override
-            public void onPartialResults(Bundle partialResults) {
-                // Log.i("SpeechRecognizer", "部分结果"); // 如果需要处理部分结果可以启用
-            }
-
-            @Override
-            public void onEvent(int eventType, Bundle params) {
-                // Log.i("SpeechRecognizer", "事件: " + eventType); // 处理其他事件
-            }
-        });
-
-        // 创建语音识别Intent
-        Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.CHINA.toString()); // 设置语言为中文
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_PROMPT, "请说话..."); // 提示用户说话
-
-        speechRecognizer.startListening(speechRecognizerIntent);
-        Log.d("SpeechRecognizer", "开始聆听...");
-        isListeningForSpeech = true; // 设置正在聆听状态
-        // 可以在这里更新麦克风按钮的UI，例如改变颜色或图标
-         updateVoiceInputButtonState();
-
-         // 启动语音识别时，停止语音播报
-         isMuted = true;
-         updateMuteButtonState();
     }
 
     // 新增方法：停止语音识别
@@ -1015,6 +958,33 @@ public class CalculatorActivity extends AppCompatActivity {
                 if (btnVoiceInput != null) {
                     btnVoiceInput.setEnabled(false);
                 }
+            }
+        }
+    }
+
+    // 添加onActivityResult方法
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_SPEECH_INPUT && resultCode == RESULT_OK && data != null) {
+            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (result != null && !result.isEmpty()) {
+                String recognizedText = result.get(0);
+                
+                // 在处理语音输入结果之前，先清空当前计算器状态
+                currentInput = new StringBuilder("0");
+                currentExpression = new StringBuilder();
+                currentOperation = null;
+                firstOperand = null;
+                newNumber = true;
+                display.setText("0");
+                expressionDisplay.setText("");
+                
+                // 调用processRecognizedText解析文本，并获取解析后的字符串
+                String processedExpression = processRecognizedText(recognizedText);
+                // 将解析后的字符串传递给handleExpressionInput方法进行处理
+                handleExpressionInput(processedExpression);
             }
         }
     }

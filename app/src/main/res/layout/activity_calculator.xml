@@ -4,75 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#e8f5e8">
+    android:background="?attr/backgroundColor">
 
-    <!-- 顶部功能区 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#e8f5e8"
-        android:orientation="horizontal"
-        android:padding="12dp">
-
-        <!-- 菜单按钮 -->
-        <ImageButton
-            android:id="@+id/btnMenu"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="菜单"
-            android:src="@drawable/icon_settings"
-            app:tint="#666666" />
-
-        <!-- 选项卡部分 -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tabBasic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="基础"
-                android:textColor="#4CAF50"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tabBinary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="进制转换"
-                android:textColor="#666666"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <!-- 右侧功能按钮 -->
-        <ImageButton
-            android:id="@+id/btnMute"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="静音"
-            android:src="@drawable/volume_off"
-            app:tint="#666666" />
-
-        <!-- 语音输入按钮 - 添加到这里 -->
-        <ImageButton
-            android:id="@+id/btnVoiceInput"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginEnd="8dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="语音输入"
-            android:src="@drawable/ic_mic"
-            app:tint="#666666" />
-    </LinearLayout>
+    <!-- 引入共用导航栏布局 -->
+    <include
+        android:id="@+id/nav_bar"
+        layout="@layout/layout_nav_bar" />
 
     <!-- 显示区域 -->
     <LinearLayout
@@ -80,7 +17,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:background="#e8f5e8"
+        android:background="?attr/displayBackgroundColor"
         android:gravity="end|bottom"
         android:padding="16dp">
 
@@ -92,7 +29,7 @@
             android:gravity="end"
             android:padding="8dp"
             android:text="722+46.2"
-            android:textColor="#666666"
+            android:textColor="?attr/displayTextSecondaryColor"
             android:textSize="24sp" />
 
         <!-- 结果显示 -->
@@ -103,7 +40,7 @@
             android:gravity="end"
             android:padding="8dp"
             android:text="768.2"
-            android:textColor="#333333"
+            android:textColor="?attr/displayTextPrimaryColor"
             android:textSize="30sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -127,9 +64,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="C"
-            android:textColor="#4CAF50"
+            android:textColor="?attr/clearButtonTextColor"
             android:textSize="20sp" />
 
         <Button
@@ -139,9 +76,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="÷"
-            android:textColor="#4CAF50"
+            android:textColor="?attr/operatorButtonTextColor"
             android:textSize="20sp" />
 
         <Button
@@ -151,22 +88,22 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="×"
-            android:textColor="#4CAF50"
+            android:textColor="?attr/operatorButtonTextColor"
             android:textSize="20sp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btnDelete"
             android:layout_width="0dp"
             android:layout_height="55dp"
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="⌫"
-            android:textColor="#4CAF50"
-            android:textSize="20sp" />
+            android:backgroundTint="?attr/buttonBackgroundColor"
+            android:src="@drawable/ic_backspace"
+            android:contentDescription="删除"
+            android:tint="@color/colorPrimary" />
 
         <!-- 第二行：7, 8, 9, + -->
         <Button
@@ -176,9 +113,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="7"
-            android:textColor="#333333"
+            android:textColor="?attr/buttonTextColor"
             android:textSize="20sp" />
 
         <Button
@@ -188,9 +125,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="8"
-            android:textColor="#333333"
+            android:textColor="?attr/buttonTextColor"
             android:textSize="20sp" />
 
         <Button
@@ -200,9 +137,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="9"
-            android:textColor="#333333"
+            android:textColor="?attr/buttonTextColor"
             android:textSize="20sp" />
 
         <Button
@@ -212,9 +149,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="?attr/operatorButtonBackgroundColor"
             android:text="+"
-            android:textColor="#ffffff"
+            android:textColor="@android:color/white"
             android:textSize="20sp" />
 
         <!-- 第三行：4, 5, 6, - -->
@@ -225,9 +162,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="4"
-            android:textColor="#333333"
+            android:textColor="?attr/buttonTextColor"
             android:textSize="20sp" />
 
         <Button
@@ -237,9 +174,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="5"
-            android:textColor="#333333"
+            android:textColor="?attr/buttonTextColor"
             android:textSize="20sp" />
 
         <Button
@@ -249,9 +186,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="6"
-            android:textColor="#333333"
+            android:textColor="?attr/buttonTextColor"
             android:textSize="20sp" />
 
         <Button
@@ -261,9 +198,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="?attr/operatorButtonBackgroundColor"
             android:text="-"
-            android:textColor="#ffffff"
+            android:textColor="@android:color/white"
             android:textSize="20sp" />
 
         <!-- 第四行：1, 2, 3, = (这里=占据两行) -->
@@ -274,9 +211,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="1"
-            android:textColor="#333333"
+            android:textColor="?attr/buttonTextColor"
             android:textSize="20sp" />
 
         <Button
@@ -286,9 +223,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="2"
-            android:textColor="#333333"
+            android:textColor="?attr/buttonTextColor"
             android:textSize="20sp" />
 
         <Button
@@ -298,9 +235,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="3"
-            android:textColor="#333333"
+            android:textColor="?attr/buttonTextColor"
             android:textSize="20sp" />
 
         <Button
@@ -311,9 +248,9 @@
             android:layout_rowSpan="2"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="@color/colorPrimary"
+            android:backgroundTint="?attr/operatorButtonBackgroundColor"
             android:text="="
-            android:textColor="#ffffff"
+            android:textColor="@android:color/white"
             android:textSize="20sp" />
 
         <!-- 第五行：0, . -->
@@ -324,9 +261,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="0"
-            android:textColor="#333333"
+            android:textColor="?attr/buttonTextColor"
             android:textSize="20sp"
             android:layout_columnSpan="2" />
 
@@ -337,9 +274,9 @@
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="."
-            android:textColor="#333333"
+            android:textColor="?attr/buttonTextColor"
             android:textSize="20sp" />
     </GridLayout>
 </LinearLayout> 

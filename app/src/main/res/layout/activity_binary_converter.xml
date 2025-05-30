@@ -4,59 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#e8f5e8">
+    android:background="?attr/backgroundColor">
 
-    <!-- 顶部功能区 - 与计算器页面保持一致 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#e8f5e8"
-        android:orientation="horizontal"
-        android:padding="12dp">
-
-        <!-- 菜单按钮 -->
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="返回"
-            android:src="@drawable/icon_settings"
-            android:tint="#666666" />
-
-        <!-- 选项卡部分 -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tabBasic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="基础"
-                android:textColor="#666666"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/tabBinary"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="进制转换"
-                android:textColor="#4CAF50"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-        </LinearLayout>
-
-        <!-- 右侧预留空间 -->
-        <View
-            android:layout_width="36dp"
-            android:layout_height="36dp" />
-    </LinearLayout>
+    <!-- 引入共用导航栏布局 -->
+    <include
+        android:id="@+id/nav_bar"
+        layout="@layout/layout_nav_bar" />
 
     <!-- 转换列表区域 - 响应式四宫格布局 -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,7 +24,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="4dp"
-            app:cardBackgroundColor="#F5F5F5"
+            app:cardBackgroundColor="?attr/cardBackgroundColor"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
             android:clickable="true"
@@ -96,7 +49,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="十进制 DEC"
-                    android:textColor="#333333"
+                    android:textColor="?attr/textColorPrimary"
                     android:textSize="@dimen/text_size_medium"
                     android:layout_marginBottom="8dp" />
 
@@ -111,7 +64,7 @@
                         android:text="1"
                         android:gravity="center"
                         android:layout_gravity="center_horizontal"
-                        android:textColor="#333333"
+                        android:textColor="?attr/textColorPrimary"
                         android:textSize="@dimen/text_size_large"
                         android:textStyle="bold"
                         android:maxLines="1"
@@ -126,7 +79,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="4dp"
-            app:cardBackgroundColor="#F5F5F5"
+            app:cardBackgroundColor="?attr/cardBackgroundColor"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
             android:clickable="true"
@@ -151,7 +104,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="二进制 BIN"
-                    android:textColor="#333333"
+                    android:textColor="?attr/textColorPrimary"
                     android:textSize="@dimen/text_size_medium"
                     android:layout_marginBottom="8dp" />
 
@@ -166,7 +119,7 @@
                         android:text="1"
                         android:gravity="center"
                         android:layout_gravity="center_horizontal"
-                        android:textColor="#333333"
+                        android:textColor="?attr/textColorPrimary"
                         android:textSize="@dimen/text_size_large"
                         android:maxLines="1"
                         android:ellipsize="end" />
@@ -180,7 +133,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="4dp"
-            app:cardBackgroundColor="#F5F5F5"
+            app:cardBackgroundColor="?attr/cardBackgroundColor"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
             android:clickable="true"
@@ -205,7 +158,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="八进制 OCT"
-                    android:textColor="#333333"
+                    android:textColor="?attr/textColorPrimary"
                     android:textSize="@dimen/text_size_medium"
                     android:layout_marginBottom="8dp" />
 
@@ -220,7 +173,7 @@
                         android:text="1"
                         android:gravity="center"
                         android:layout_gravity="center_horizontal"
-                        android:textColor="#333333"
+                        android:textColor="?attr/textColorPrimary"
                         android:textSize="@dimen/text_size_large"
                         android:maxLines="1"
                         android:ellipsize="end" />
@@ -234,7 +187,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_margin="4dp"
-            app:cardBackgroundColor="#F5F5F5"
+            app:cardBackgroundColor="?attr/cardBackgroundColor"
             app:cardCornerRadius="8dp"
             app:cardElevation="2dp"
             android:clickable="true"
@@ -248,7 +201,7 @@
             app:layout_constraintVertical_weight="1">
 
             <LinearLayout
-                android:id="@+id/layoutHexadecimalRow"
+                android:id="@+id/layoutHexRow"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
@@ -259,7 +212,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="十六进制 HEX"
-                    android:textColor="#333333"
+                    android:textColor="?attr/textColorPrimary"
                     android:textSize="@dimen/text_size_medium"
                     android:layout_marginBottom="8dp" />
 
@@ -274,7 +227,7 @@
                         android:text="1"
                         android:gravity="center"
                         android:layout_gravity="center_horizontal"
-                        android:textColor="#333333"
+                        android:textColor="?attr/textColorPrimary"
                         android:textSize="@dimen/text_size_large"
                         android:maxLines="1"
                         android:ellipsize="end" />
@@ -283,258 +236,272 @@
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- 计算器按键区域 -->
+    <!-- 底部按钮区域 - 与计算器页面保持一致 -->
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="4"
         android:rowCount="5"
         android:layout_marginHorizontal="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="8dp"
+        android:useDefaultMargins="true"
+        android:alignmentMode="alignBounds">
 
-        <!-- 第一行 -->
-        <Button
-            android:id="@+id/btnClear"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="C"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
+        
+            <!-- 第一行：C, ⌫, F, E -->
+    <Button
+        android:id="@+id/btnClear"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="C"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_large" />
 
-        <Button
-            android:id="@+id/btnDelete"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="⌫"
-            android:textColor="@color/colorPrimary"
-            android:textSize="20sp" />
+    <ImageButton
+        android:id="@+id/btnDelete"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:src="@drawable/ic_backspace"
+        android:contentDescription="删除"
+        android:tint="@color/colorPrimary" />
 
-        <Button
-            android:id="@+id/btnF"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="F"
-            android:textColor="#999999"
-            android:textSize="20sp" />
+    <Button
+        android:id="@+id/btnF"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="F"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <Button
-            android:id="@+id/btnE"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="E"
-            android:textColor="#999999"
-            android:textSize="20sp" />
+    <Button
+        android:id="@+id/btnE"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="E"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <!-- 第二行 -->
-        <Button
-            android:id="@+id/btn7"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="7"
-            android:textColor="#333333"
-            android:textSize="20sp" />
+    <!-- 第二行：7, 8, 9, D -->
+    <Button
+        android:id="@+id/btn7"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="7"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <Button
-            android:id="@+id/btn8"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="8"
-            android:textColor="#333333"
-            android:textSize="20sp" />
+    <Button
+        android:id="@+id/btn8"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="8"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <Button
-            android:id="@+id/btn9"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="9"
-            android:textColor="#333333"
-            android:textSize="20sp" />
+    <Button
+        android:id="@+id/btn9"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="9"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <Button
-            android:id="@+id/btnD"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="D"
-            android:textColor="#999999"
-            android:textSize="20sp" />
+    <Button
+        android:id="@+id/btnD"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="D"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <!-- 第三行 -->
-        <Button
-            android:id="@+id/btn4"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="4"
-            android:textColor="#333333"
-            android:textSize="20sp" />
+    <!-- 第三行：4, 5, 6, C -->
+    <Button
+        android:id="@+id/btn4"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="4"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <Button
-            android:id="@+id/btn5"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="5"
-            android:textColor="#333333"
-            android:textSize="20sp" />
+    <Button
+        android:id="@+id/btn5"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="5"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <Button
-            android:id="@+id/btn6"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="6"
-            android:textColor="#333333"
-            android:textSize="20sp" />
+    <Button
+        android:id="@+id/btn6"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="6"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <Button
-            android:id="@+id/btnC"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="C"
-            android:textColor="#999999"
-            android:textSize="20sp" />
+    <Button
+        android:id="@+id/btnC_hex" 
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="C"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <!-- 第四行 -->
-        <Button
-            android:id="@+id/btn1"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="1"
-            android:textColor="#333333"
-            android:textSize="20sp" />
+    <!-- 第四行：1, 2, 3, B -->
+    <Button
+        android:id="@+id/btn1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="1"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <Button
-            android:id="@+id/btn2"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="2"
-            android:textColor="#333333"
-            android:textSize="20sp" />
+    <Button
+        android:id="@+id/btn2"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="2"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <Button
-            android:id="@+id/btn3"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="3"
-            android:textColor="#333333"
-            android:textSize="20sp" />
+    <Button
+        android:id="@+id/btn3"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="3"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <Button
-            android:id="@+id/btnB"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="B"
-            android:textColor="#999999"
-            android:textSize="20sp" />
+    <Button
+        android:id="@+id/btnB"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="B"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large" />
 
-        <!-- 第五行 -->
-        <Button
-            android:id="@+id/btnDoubleZero"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_columnWeight="1"
-            android:layout_margin="3dp"
-            android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
-            android:text="00"
-            android:textColor="#333333"
-            android:textSize="20sp" />
+    <!-- 第五行：00, 0, ., A -->
+    <Button
+        android:id="@+id/btnDoubleZero"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/button_height"
+        android:layout_columnWeight="1"
+        android:layout_margin="3dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="?attr/buttonBackgroundColor"
+        android:text="00"
+        android:textColor="?attr/buttonTextColor"
+        android:textSize="@dimen/text_size_large"
+        android:layout_row="4"
+        android:layout_column="0" />
 
+        <!-- 第五行：0, ., A (0占据左侧两列宽) -->
         <Button
             android:id="@+id/btn0"
             android:layout_width="0dp"
-            android:layout_height="55dp"
+            android:layout_height="@dimen/button_height"
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="0"
-            android:textColor="#333333"
-            android:textSize="20sp" />
+            android:textColor="?attr/buttonTextColor"
+            android:textSize="@dimen/text_size_large"
+            android:layout_row="4"
+            android:layout_column="1" />
 
         <Button
             android:id="@+id/btnDot"
             android:layout_width="0dp"
-            android:layout_height="55dp"
+            android:layout_height="@dimen/button_height"
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="."
-            android:textColor="#333333"
-            android:textSize="20sp" />
-
+            android:textColor="?attr/buttonTextColor"
+            android:textSize="@dimen/text_size_large"
+            android:layout_row="4"
+            android:layout_column="2" />
+        
         <Button
             android:id="@+id/btnA"
             android:layout_width="0dp"
-            android:layout_height="55dp"
+            android:layout_height="@dimen/button_height"
             android:layout_columnWeight="1"
             android:layout_margin="3dp"
             android:background="@drawable/rounded_button"
-            android:backgroundTint="#ffffff"
+            android:backgroundTint="?attr/buttonBackgroundColor"
             android:text="A"
-            android:textColor="#999999"
-            android:textSize="20sp" />
+            android:textColor="?attr/buttonTextColor"
+            android:textSize="@dimen/text_size_large"
+            android:layout_row="4"
+            android:layout_column="3" />
+
     </GridLayout>
+
 </LinearLayout> 

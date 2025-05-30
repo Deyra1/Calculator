@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/backgroundColor"
+    android:padding="12dp">
+
+    <!-- 左侧按钮 - 可以是菜单或返回按钮 -->
+    <FrameLayout
+        android:id="@+id/left_buttons_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        
+        <ImageButton
+            android:id="@+id/btnMenu"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="菜单"
+            android:src="@drawable/icon_settings"
+            android:scaleType="centerInside"
+            app:tint="?attr/iconTint" />
+            
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="返回"
+            android:src="@drawable/icon_settings"
+            android:scaleType="centerInside"
+            android:visibility="gone"
+            app:tint="?attr/iconTint" />
+    </FrameLayout>
+
+    <!-- 选项卡部分 - 约束到父布局中心 -->
+    <LinearLayout
+        android:id="@+id/tabs_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/tabBasic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
+            android:text="基础"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tabBinary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:gravity="center"
+            android:text="进制转换"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- 右侧功能按钮容器 -->
+    <LinearLayout
+        android:id="@+id/right_buttons_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        
+        <ImageButton
+            android:id="@+id/btnMute"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="静音"
+            android:src="@drawable/volume_off"
+            android:scaleType="centerInside"
+            app:tint="?attr/iconTint" />
+
+        <ImageButton
+            android:id="@+id/btnVoiceInput"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="语音输入"
+            android:src="@drawable/ic_mic"
+            android:scaleType="centerInside"
+            app:tint="?attr/iconTint" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout> 

@@ -4,13 +4,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#e8f5e8">
+    android:background="?attr/backgroundColor">
 
     <!-- 顶部功能区 - 与其他页面保持一致的样式 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#e8f5e8"
+        android:background="?attr/backgroundColor"
         android:orientation="horizontal"
         android:padding="12dp">
 
@@ -22,7 +22,7 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="返回"
             android:src="@drawable/back"
-            android:tint="#666666" />
+            android:tint="?attr/iconTint" />
 
         <!-- 标题部分 -->
         <LinearLayout
@@ -37,7 +37,7 @@
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:text="历史记录"
-                android:textColor="#4CAF50"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -50,14 +50,14 @@
             android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="清除历史记录"
             android:src="@drawable/clean"
-            android:tint="#666666" />
+            android:tint="?attr/iconTint" />
     </LinearLayout>
 
     <!-- 分隔线 -->
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E0E0E0" />
+        android:background="?attr/dividerColor" />
 
     <!-- 历史记录列表 -->
     <androidx.recyclerview.widget.RecyclerView
@@ -74,7 +74,7 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:text="暂无历史记录"
-        android:textColor="#999999"
+        android:textColor="?attr/textColorSecondary"
         android:textSize="16sp"
         android:visibility="gone" />
 
