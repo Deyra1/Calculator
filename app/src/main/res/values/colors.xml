@@ -25,4 +25,18 @@
     <color name="gray">#808080</color>
     <color name="colorAccent">#FF4081</color>
     <color name="buttonTextColorOnPrimary">#FFFFFF</color>
+
+    <!-- Custom Dark Mode Colors -->
+    <color name="colorPrimaryLight_dark">#AED581</color>
+    <color name="colorPrimaryDark_dark">#558B2F</color>
+    <color name="colorBackground_dark">#e8f5e8</color>
+    <color name="textColorPrimary_dark">#333333</color>
+    <color name="textColorSecondary_dark">#666666</color>
+    <color name="buttonBackground_dark">#ffffff</color>
+    <color name="buttonPressed_dark">#cccccc</color>
+    <color name="displayBackground_dark">#e8f5e8</color>
+    <color name="gray_dark">#808080</color>
+    <color name="colorPrimary_dark">#69C261</color>
+    <color name="operatorButtonBackground_dark">#69C261</color>
+    <color name="buttonTextColorOnPrimary_dark">#FFFFFF</color>
 </resources>
