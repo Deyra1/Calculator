@@ -178,8 +178,8 @@ public class BinaryConverterActivity extends AppCompatActivity {
                 btnBack.setVisibility(View.GONE);
                 
                 btnMenu.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                         // 跳转到菜单页面
                         Intent menuIntent = new Intent(BinaryConverterActivity.this, MenuActivity.class);
                         // 传递当前登录的用户名
@@ -207,9 +207,9 @@ public class BinaryConverterActivity extends AppCompatActivity {
                 
                 // 设置标签点击事件
                 tabBasic.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // 处理基础计算器标签的点击
+                @Override
+                public void onClick(View v) {
+                    // 处理基础计算器标签的点击
                         Intent calculatorIntent = new Intent(BinaryConverterActivity.this, CalculatorActivity.class);
                         // 传递当前登录的用户名
                         calculatorIntent.putExtra("username", getIntent().getStringExtra("username") != null ? 
@@ -233,7 +233,7 @@ public class BinaryConverterActivity extends AppCompatActivity {
             
             if (btnVoiceInput != null) {
                 btnVoiceInput.setVisibility(View.GONE);
-            }
+                }
         } catch (Exception e) {
             Log.e(TAG, "Error setting up top bar: " + e.getMessage(), e);
         }
@@ -263,8 +263,8 @@ public class BinaryConverterActivity extends AppCompatActivity {
             char[] hexChars = {'A', 'B', 'C', 'D', 'E', 'F'};
             for (int i = 0; i < 6; i++) {
                 char c = hexChars[i];
-                final char hex = c;
-                int id = getResources().getIdentifier("btn" + c, "id", getPackageName());
+            final char hex = c;
+            int id = getResources().getIdentifier("btn" + c, "id", getPackageName());
                 // 特殊处理C按钮，因为它有特殊的ID
                 if (c == 'C') {
                     id = R.id.btnC_hex;
@@ -280,8 +280,8 @@ public class BinaryConverterActivity extends AppCompatActivity {
                             Log.e(TAG, "Error handling hex button click: " + e.getMessage(), e);
                         }
                     });
-                }
             }
+        }
 
         // 双零按钮
         btnDoubleZero = findViewById(R.id.btnDoubleZero);
@@ -383,7 +383,7 @@ public class BinaryConverterActivity extends AppCompatActivity {
                         }
                     }
                     updateDisplay();
-                        }
+                }
                     } catch (Exception e) {
                         Log.e(TAG, "Error handling delete button click: " + e.getMessage(), e);
                 }
@@ -624,8 +624,8 @@ public class BinaryConverterActivity extends AppCompatActivity {
                 } else {
                     // 整数情况，进行正常的进制转换
                     int intValue = Integer.parseInt(inputStr, inputBase);
-                    
-                    // 更新所有进制的值
+            
+            // 更新所有进制的值
                     txtBinaryValue.setText(Integer.toBinaryString(intValue));
                     txtOctalValue.setText(Integer.toOctalString(intValue));
                     txtDecimalValue.setText(Integer.toString(intValue));

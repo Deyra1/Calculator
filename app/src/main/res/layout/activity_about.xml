@@ -129,7 +129,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="本应用是Android开发课程的期末项目，实现了基本的计算器功能，包括基础计算、科学计算以及用户登录等功能。"
+                        android:text="本应用是一款面向 Android 平台的多功能计算器，支持基础四则运算、进制转换、历史记录、用户登录、语音输入与播报、主题切换等实用功能。界面简洁，操作便捷，适合日常学习和工作使用。"
                         android:textSize="16sp"
                         android:textColor="?attr/textColorPrimary" />
                 </LinearLayout>
@@ -162,7 +162,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="1. 基础计算功能\n2. 科学计算功能\n3. 进制转换功能\n4. 历史记录查看\n5. 用户登录注册\n6. TTL"
+                        android:text="1. 基础四则运算\n2. 进制转换（二/八/十/十六进制）\n3. 历史记录\n4. 用户登录注册\n5. TTL 功能\n6. 语音输入\n7. 主题切换（浅色/深色/跟随系统）"
                         android:textSize="16sp"
                         android:textColor="?attr/textColorPrimary" />
                 </LinearLayout>
@@ -195,7 +195,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="- Activity和布局设计\n- Intent和Activity跳转\n- 广播接收器\n- 用户界面设计\n- 事件处理\n- Java面向对象编程"
+                        android:text="- Activity与布局（XML）\n- Intent与Activity跳转\n- 用户界面设计\n- 事件处理\n- Java面向对象编程\n- Android权限管理\n- Android SpeechRecognizer（语音输入）\n- Android TextToSpeech（语音播报）\n- 主题与样式应用"
                         android:textSize="16sp"
                         android:textColor="?attr/textColorPrimary" />
                 </LinearLayout>
@@ -228,7 +228,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="小组成员：\n- 代樾\n- 吴紫玉\n- 高嘉洁"
+                        android:text="- 代樾\n- 吴紫玉\n- 高嘉洁"
                         android:textSize="16sp"
                         android:textColor="?attr/textColorPrimary" />
                 </LinearLayout>
@@ -238,7 +238,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="© 2025 计算器项目小组 版权所有"
+                android:text="© 2025 Android计算器项目小组 版权所有"
                 android:textSize="14sp"
                 android:textColor="?attr/colorPrimary"
                 android:gravity="center"

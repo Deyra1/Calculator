@@ -340,7 +340,7 @@ public class CalculatorActivity extends AppCompatActivity {
             }
             
             ImageButton btnMute = navBar.findViewById(R.id.btnMute);
-            if (btnMute != null) {
+        if (btnMute != null) {
                 // 获取当前音量状态
                 SharedPreferences preferences = getSharedPreferences("CalculatorPrefs", MODE_PRIVATE);
                 boolean isMuted = preferences.getBoolean("isMuted", false);
@@ -349,9 +349,9 @@ public class CalculatorActivity extends AppCompatActivity {
                 btnMute.setImageResource(isMuted ? R.drawable.volume_off : R.drawable.volume_on);
                 
                 // 设置点击事件
-                btnMute.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            btnMute.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                         // 切换音量状态
                         SharedPreferences prefs = getSharedPreferences("CalculatorPrefs", MODE_PRIVATE);
                         boolean currentMuted = prefs.getBoolean("isMuted", false);
@@ -377,8 +377,8 @@ public class CalculatorActivity extends AppCompatActivity {
             ImageButton btnVoiceInput = navBar.findViewById(R.id.btnVoiceInput);
             if (btnVoiceInput != null) {
                 btnVoiceInput.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                         // 启动语音输入
                         startVoiceInput();
                     }
