@@ -47,7 +47,7 @@ public class CalculatorActivity extends AppCompatActivity {
     private String currentOperation = null;
     private Double firstOperand = null;
     private boolean newNumber = true;
-    private boolean isMuted = true; // 默认设置为静音
+    private boolean isMuted; // 默认不初始化，将从SharedPreferences加载
     private CalculatorBroadcastReceiver broadcastReceiver;
     private HistoryManager historyManager;
     private TextToSpeech textToSpeech;
@@ -85,7 +85,14 @@ public class CalculatorActivity extends AppCompatActivity {
                 Log.e("TTS", "Failed to request audio focus.");
             }
 
-            // 初始化TextToSpeech，延迟初始化
+            // 检查并请求必要的权限
+            checkAndRequestPermissions();
+
+            // 在初始化TextToSpeech之前，先从SharedPreferences加载isMuted状态
+            SharedPreferences calculatorPrefs = getSharedPreferences("CalculatorPrefs", MODE_PRIVATE);
+            this.isMuted = calculatorPrefs.getBoolean("isMuted", false); // 默认不静音
+
+            // 初始化TextToSpeech
             initializeTextToSpeech();
             
             // 初始化显示区域
@@ -105,7 +112,7 @@ public class CalculatorActivity extends AppCompatActivity {
             displayLatestHistory();
             
             // 初始化顶部功能区
-            setupTopBar();
+            setupTopBar(); // This will call setupVolumeButton()
             
             // 初始化计算器按钮
             setupCalculatorButtons();
@@ -133,6 +140,22 @@ public class CalculatorActivity extends AppCompatActivity {
         }
     }
     
+    private void checkAndRequestPermissions() {
+        String[] permissions = {
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.MODIFY_AUDIO_SETTINGS,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        };
+
+        for (String permission : permissions) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
+                break;
+            }
+        }
+    }
+
     private void initializeTextToSpeech() {
         try {
             if (textToSpeech != null) {
@@ -150,43 +173,50 @@ public class CalculatorActivity extends AppCompatActivity {
                             Log.e("TTS", "不支持中文语音合成或缺少数据。");
                             isTTSInitialized = false;
                             paused = true;
-                            if (result == TextToSpeech.LANG_MISSING_DATA) {
-                                Log.e("TTS", "缺少中文语音数据，尝试启动下载界面...");
-                                Intent installIntent = new Intent();
-                                installIntent.setAction(TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA);
-                                installIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                try {
-                                    startActivity(installIntent);
-                                } catch (Exception e) {
-                                    Log.e("TTS", "启动语音数据安装界面失败: " + e.getMessage());
-                                    Toast.makeText(getApplicationContext(), "无法启动语音数据安装界面，请检查系统TTS设置", Toast.LENGTH_LONG).show();
-                                }
-                            }
+                            // 尝试下载语音数据
+                            Intent installIntent = new Intent();
+                            installIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
+                            startActivity(installIntent);
+                            Toast.makeText(getApplicationContext(), "请安装中文语音包", Toast.LENGTH_LONG).show();
                         } else {
-                             // 检查语音数据是否已下载
+                            // 检查语音数据是否已下载
                             if (textToSpeech.isLanguageAvailable(Locale.CHINESE) >= TextToSpeech.LANG_AVAILABLE) {
                                 Log.i("TTS", "中文语音数据已完整下载，TTS初始化成功");
                                 isTTSInitialized = true;
-                                paused = false; // 在初始化完成后将paused设置为false
-                                // 可以在这里添加打开页面时的语音播报，但考虑到首页是计算器，可能不需要。
-                                // 如果需要，可以取消注释speakOut("计算器已加载");
-                                // speakOut("计算器已加载");
+                                paused = false; // 确保在TTS准备好后设置为false
+                                // 设置语音参数
+                                textToSpeech.setPitch(1.0f);
+                                textToSpeech.setSpeechRate(1.0f);
+                                // 设置默认音量
+                                textToSpeech.setSpeechRate(1.0f);
+                                // 设置音频流类型
+                                textToSpeech.setAudioAttributes(new android.media.AudioAttributes.Builder()
+                                    .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                                    .setUsage(android.media.AudioAttributes.USAGE_MEDIA)
+                                    .build());
+                                
+                                // 仅在未静音时播报初始化成功提示
+                                if (!isMuted) {
+                                    speakResult("语音播报初始化成功");
+                                }
                             } else {
                                 Log.e("TTS", "中文语音数据未完整下载。");
                                 isTTSInitialized = false;
                                 paused = true;
+                                Toast.makeText(getApplicationContext(), "请确保已下载中文语音包", Toast.LENGTH_LONG).show();
                             }
                         }
                     } else {
                         Log.e("TTS", "TextToSpeech引擎初始化失败，错误码：" + status);
                         isTTSInitialized = false;
                         paused = true;
+                        Toast.makeText(getApplicationContext(), "语音引擎初始化失败", Toast.LENGTH_LONG).show();
                     }
                     // 更新UI以反映状态
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            updateMuteButtonState();
+                            // updateMuteButtonState(); // 移除，因为setupVolumeButton会直接设置图标
                         }
                     });
                 }
@@ -195,26 +225,11 @@ public class CalculatorActivity extends AppCompatActivity {
             Log.e("CalculatorActivity", "初始化语音引擎失败: " + e.getMessage());
             isTTSInitialized = false;
             paused = true;
-            updateMuteButtonState();
+            // updateMuteButtonState(); // 移除
+            Toast.makeText(getApplicationContext(), "初始化语音引擎失败: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    private void updateMuteButtonState() {
-        try {
-            final ImageButton btnMute = findViewById(R.id.btnMute);
-            if (btnMute != null) {
-                btnMute.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        btnMute.setImageResource(isMuted ? R.drawable.volume_off : R.drawable.volume_on);
-                    }
-                });
-            }
-        } catch (Exception e) {
-            Log.e("CalculatorActivity", "更新音量按钮状态失败: " + e.getMessage());
-        }
-    }
-    
     /**
      * 显示最新的历史记录
      */
@@ -329,7 +344,7 @@ public class CalculatorActivity extends AppCompatActivity {
             Log.e("CalculatorActivity", "Error setting up top bar: " + e.getMessage(), e);
         }
     }
-    
+
     private void setupVolumeButton() {
         try {
             // 获取导航栏布局中的音量按钮
@@ -340,34 +355,29 @@ public class CalculatorActivity extends AppCompatActivity {
             }
             
             ImageButton btnMute = navBar.findViewById(R.id.btnMute);
-        if (btnMute != null) {
-                // 获取当前音量状态
-                SharedPreferences preferences = getSharedPreferences("CalculatorPrefs", MODE_PRIVATE);
-                boolean isMuted = preferences.getBoolean("isMuted", false);
-                
-                // 设置初始图标
-                btnMute.setImageResource(isMuted ? R.drawable.volume_off : R.drawable.volume_on);
+            if (btnMute != null) {
+                // 根据当前isMuted状态设置初始图标
+                btnMute.setImageResource(this.isMuted ? R.drawable.volume_off : R.drawable.volume_on);
                 
                 // 设置点击事件
-            btnMute.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                        // 切换音量状态
-                        SharedPreferences prefs = getSharedPreferences("CalculatorPrefs", MODE_PRIVATE);
-                        boolean currentMuted = prefs.getBoolean("isMuted", false);
-                        boolean newMuted = !currentMuted;
+                btnMute.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // 切换类成员变量isMuted状态
+                        CalculatorActivity.this.isMuted = !CalculatorActivity.this.isMuted;
                         
-                        // 保存新的音量状态
+                        // 保存新的音量状态到SharedPreferences
+                        SharedPreferences prefs = getSharedPreferences("CalculatorPrefs", MODE_PRIVATE);
                         SharedPreferences.Editor editor = prefs.edit();
-                        editor.putBoolean("isMuted", newMuted);
+                        editor.putBoolean("isMuted", CalculatorActivity.this.isMuted);
                         editor.apply();
                         
                         // 更新按钮图标
-                        btnMute.setImageResource(newMuted ? R.drawable.volume_off : R.drawable.volume_on);
+                        btnMute.setImageResource(CalculatorActivity.this.isMuted ? R.drawable.volume_off : R.drawable.volume_on);
                         
                         // 显示提示
                         Toast.makeText(CalculatorActivity.this, 
-                            newMuted ? "已关闭按键音效" : "已开启按键音效", 
+                            CalculatorActivity.this.isMuted ? "已关闭按键音效" : "已开启按键音效", 
                             Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -593,26 +603,39 @@ public class CalculatorActivity extends AppCompatActivity {
     private void speakResult(String text) {
         if (!isMuted && isTTSInitialized && !paused) {
             if (textToSpeech != null) {
-                HashMap<String, String> params = new HashMap<>();
-                // params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "result"); // 可以添加utterance ID用于监听回调
                 try {
-                    textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, params);
-                    Log.i("TTS", "正在播报: " + text);
+                    // 检查TTS引擎状态
+                    if (textToSpeech.isLanguageAvailable(Locale.CHINESE) < TextToSpeech.LANG_AVAILABLE) {
+                        Log.e("TTS", "中文语音数据不可用");
+                        isTTSInitialized = false;
+                        paused = true;
+                        return;
+                    }
+
+                    // 设置音频流类型
+                    textToSpeech.setAudioAttributes(new android.media.AudioAttributes.Builder()
+                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SPEECH)
+                        .setUsage(android.media.AudioAttributes.USAGE_MEDIA)
+                        .build());
+
+                    // 尝试播报
+                    int result = textToSpeech.speak(text, TextToSpeech.QUEUE_FLUSH, null, "result");
+                    if (result == TextToSpeech.ERROR) {
+                        Log.e("TTS", "播报失败，错误码：" + result);
+                        isTTSInitialized = false;
+                        paused = true;
+                    } else {
+                        Log.i("TTS", "正在播报: " + text);
+                    }
                 } catch (Exception e) {
                     Log.e("TTS", "播报失败: " + e.getMessage());
-                    // 播报失败时更新静音状态和UI
-                    isMuted = true;
-                    paused = true;
                     isTTSInitialized = false;
-                    updateMuteButtonState();
+                    paused = true;
                 }
             } else {
-                 Log.w("TTS", "TextToSpeech 对象为 null，无法播报。");
-                 // TTS对象为null时更新静音状态和UI
-                 isMuted = true;
-                 paused = true;
-                 isTTSInitialized = false;
-                 updateMuteButtonState();
+                Log.w("TTS", "TextToSpeech 对象为 null，无法播报。");
+                isTTSInitialized = false;
+                paused = true;
             }
         } else {
             Log.d("TTS", "静音或TTS未初始化/暂停，跳过播报。");
