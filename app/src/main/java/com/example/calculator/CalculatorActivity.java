@@ -775,14 +775,10 @@ public class CalculatorActivity extends AppCompatActivity {
 
         StringBuilder processedInput = new StringBuilder();
 
-        // 改进解析逻辑：先替换中文数字和运算符关键词为符号，然后处理剩余字符
+        //先替换中文数字和运算符关键词为符号，然后处理剩余字符
         String tempText = cleanedText;
 
-        // 为了避免替换时出现部分匹配问题（例如先替换"一"再替换"十一"），
-        // 我们可以按词语长度降序排序，或者使用更复杂的匹配方式。
-        // 对于基础实现，我们简单地按顺序替换，这可能会有一些局限性。
-
-        // 先替换中文数字（避免影响包含数字的运算符关键词，如"乘以"）
+        // 先替换中文数字
         for (Map.Entry<String, String> entry : numberMap.entrySet()) {
             tempText = tempText.replace(entry.getKey(), entry.getValue());
         }
@@ -792,8 +788,8 @@ public class CalculatorActivity extends AppCompatActivity {
             tempText = tempText.replace(entry.getKey(), entry.getValue());
         }
 
-        // 现在 tempText 中应该大部分是数字、小数点和运算符符号了
-        // 我们再遍历一次，只保留数字、小数点和已知的运算符符号
+        // 现在 tempText 中应该是数字、小数点和运算符符号
+        // 再遍历一次，只保留数字、小数点和已知的运算符符号
         for (char c : tempText.toCharArray()) {
             String charStr = String.valueOf(c);
             if (Character.isDigit(c) || charStr.equals(".") ||
@@ -815,7 +811,6 @@ public class CalculatorActivity extends AppCompatActivity {
     // 新增方法：处理解析后的表达式字符串输入
     private void handleExpressionInput(String expression) {
         // 遍历解析后的表达式字符串，模拟按键输入
-        // 这里需要根据计算器的现有逻辑来决定如何馈送输入
         for (char c : expression.toCharArray()) {
             String inputChar = String.valueOf(c);
 
